@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 
 @Entity
@@ -11,7 +12,7 @@ import java.time.LocalDate;
 @Data
 public class Customer {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     private Long id;
     @Column(name = "Identity_Number",length = 20,unique = true)
     private Long identityNumber;
@@ -25,5 +26,13 @@ public class Customer {
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;
+    @OneToOne
+    @JoinColumn(name = "depositAccount_id",referencedColumnName = "id")
+    private DepositAccount depositAccount;
+    @OneToOne
+    @JoinColumn(name = "savingAccount_id",referencedColumnName = "id")
+    private SavingsAccount savingsAccount;
+    @OneToMany(mappedBy = "customer")
+    private List<DebitCard> debitCardList ;
 
 }

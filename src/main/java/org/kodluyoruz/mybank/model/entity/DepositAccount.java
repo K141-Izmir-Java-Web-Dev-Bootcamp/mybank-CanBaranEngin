@@ -11,7 +11,8 @@ public class DepositAccount extends Account {
     @Id
     @GeneratedValue
     private Long id;
-    @OneToOne(mappedBy = "depositAccount")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToOne(mappedBy = "depositAccount")
     private DebitCard debitCard;

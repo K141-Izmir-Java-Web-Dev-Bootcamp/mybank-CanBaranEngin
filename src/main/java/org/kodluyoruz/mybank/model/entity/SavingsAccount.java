@@ -16,6 +16,7 @@ public class SavingsAccount extends Account {
     private String savingsAccountType;
     @Column(name="Bank_Rate")
     private Double bankRate;
-    @OneToOne(mappedBy = "savingsAccount")
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 }

@@ -27,12 +27,10 @@ public class Customer {
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;
-    @OneToOne
-    @JoinColumn(name = "depositAccount_id",referencedColumnName = "id")
-    private DepositAccount depositAccount;
-    @OneToOne
-    @JoinColumn(name = "savingAccount_id",referencedColumnName = "id")
-    private SavingsAccount savingsAccount;
+    @OneToMany(mappedBy = "customer")
+    private List<DepositAccount> depositAccount;
+    @OneToMany(mappedBy = "customer")
+    private List<SavingsAccount> savingsAccount;
     @OneToMany(mappedBy = "customer")
     private List<DebitCard> debitCardList ;
     @OneToMany(mappedBy = "customer")

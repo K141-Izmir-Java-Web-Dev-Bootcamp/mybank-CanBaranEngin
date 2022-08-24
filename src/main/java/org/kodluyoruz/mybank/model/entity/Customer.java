@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -34,5 +35,13 @@ public class Customer {
     private SavingsAccount savingsAccount;
     @OneToMany(mappedBy = "customer")
     private List<DebitCard> debitCardList ;
+    @OneToMany(mappedBy = "customer")
+    private List<CreditCard> creditCardList ;
+    @ManyToMany
+    @JoinTable(
+            name = "Customers_Transfer ",
+            joinColumns = @JoinColumn(name = "Customers_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "Transfer_id",referencedColumnName = "id"))
+    private Set<Transfer> transferList;
 
 }

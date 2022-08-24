@@ -15,4 +15,6 @@ public class DepositAccount extends Account {
     private Customer customer;
     @OneToOne(mappedBy = "depositAccount")
     private DebitCard debitCard;
+    @OneToOne(mappedBy = "depositAccount")
+    private CreditCard creditCard;
 }

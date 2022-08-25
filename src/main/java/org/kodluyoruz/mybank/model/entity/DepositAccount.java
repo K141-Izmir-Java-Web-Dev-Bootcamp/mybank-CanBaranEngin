@@ -1,16 +1,18 @@
 package org.kodluyoruz.mybank.model.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class DepositAccount extends Account {
-    @Id
-    @GeneratedValue
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -18,4 +20,6 @@ public class DepositAccount extends Account {
     private DebitCard debitCard;
     @OneToOne(mappedBy = "depositAccount")
     private CreditCard creditCard;
+
+
 }

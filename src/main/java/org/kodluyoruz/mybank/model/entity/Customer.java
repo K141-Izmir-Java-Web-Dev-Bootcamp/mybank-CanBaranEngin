@@ -27,9 +27,9 @@ public class Customer {
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany
     private List<DepositAccount> depositAccount;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany
     private List<SavingsAccount> savingsAccount;
     @OneToMany(mappedBy = "customer")
     private List<DebitCard> debitCardList ;

@@ -1,4 +1,4 @@
-package org.kodluyoruz.mybank.config;
+package org.kodluyoruz.mybank.maper;
 
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;

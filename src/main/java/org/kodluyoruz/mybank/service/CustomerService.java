@@ -3,6 +3,7 @@ package org.kodluyoruz.mybank.service;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
+import org.kodluyoruz.mybank.service.impl.CustomerServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomerService {
+public class CustomerService implements CustomerServiceImpl {
 
     private final CustomerRepository customerRepository;
     private final ModelMapper modelMapper;
@@ -21,33 +22,27 @@ public class CustomerService {
         this.modelMapper = modelMapper;
     }
 
+    @Override
     public CustomerDto create(CustomerDto customerDto){
 
         Customer createdCustomer = modelMapper.map(customerDto,Customer.class);
         return modelMapper.map(customerRepository.save(createdCustomer),CustomerDto.class);
     }
 
-    public CustomerDto getCustomerById(long id){
+    @Override
+    public Customer getCustomerById(long id){
         Optional<Customer> getCustomer = customerRepository.findById(id);
-        return modelMapper.map(customerRepository.save(getCustomer.get()),CustomerDto.class);
+        customerRepository.save(getCustomer.get());
+        return getCustomer.get();
     }
 
+    @Override
     public List<CustomerDto> getCustomers() {
         List<Customer> customers = (List<Customer>) customerRepository.findAll();
         return customers.stream().map(customer -> modelMapper.map(customer,CustomerDto.class)).collect(Collectors.toList());
     }
 
-
-    public Boolean deleteCustomer(Long id) {
-        Optional<Customer> customers = customerRepository.findById(id);
-
-        if(customers.isPresent()) {
-            customerRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
+    @Override
     public CustomerDto updateCustomer(Long id,CustomerDto customerDto) {
         Optional<Customer> customerResult = customerRepository.findById(id);
 
@@ -63,4 +58,17 @@ public class CustomerService {
 
         return null;
     }
+
+    @Override
+    public Boolean deleteCustomer(Long id) {
+        Optional<Customer> customers = customerRepository.findById(id);
+
+        if(customers.isPresent()) {
+            customerRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 }

@@ -6,7 +6,9 @@ import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
@@ -25,7 +27,24 @@ public class CustomerService {
         return modelMapper.map(customerRepository.save(createdCustomer),CustomerDto.class);
     }
 
-    public Optional<Customer> getCustomerById(long customerId){
-        return customerRepository.findById(customerId);
+    public CustomerDto getCustomerById(long id){
+        Optional<Customer> getCustomer = customerRepository.findById(id);
+        return modelMapper.map(customerRepository.save(getCustomer.get()),CustomerDto.class);
+    }
+
+    public List<CustomerDto> getCustomers() {
+        List<Customer> customers = (List<Customer>) customerRepository.findAll();
+        return customers.stream().map(customer -> modelMapper.map(customer,CustomerDto.class)).collect(Collectors.toList());
+    }
+
+
+    public Boolean deleteCustomer(Long id) {
+        Optional<Customer> customers = customerRepository.findById(id);
+
+        if(customers.isPresent()) {
+            customerRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

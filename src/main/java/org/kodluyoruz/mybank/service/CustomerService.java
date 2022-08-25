@@ -47,4 +47,20 @@ public class CustomerService {
         }
         return false;
     }
+
+    public CustomerDto updateCustomer(Long id,CustomerDto customerDto) {
+        Optional<Customer> customerResult = customerRepository.findById(id);
+
+        if(customerResult.isPresent()){
+            customerResult.get().setFirstName(customerDto.getFirstName());
+            customerResult.get().setLastName(customerDto.getLastName());
+            customerResult.get().setBirthday(customerDto.getBirthday());
+            customerResult.get().setEmail(customerDto.getEmail());
+            customerResult.get().setPassword(customerDto.getPassword());
+            customerResult.get().setIdentityNumber(customerDto.getIdentityNumber());
+            return modelMapper.map(customerRepository.save(customerResult.get()),CustomerDto.class);
+        }
+
+        return null;
+    }
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,5 +38,10 @@ public class DepositAccountService implements DepositAccountServiceImpl {
     public List<DepositAccount> getAll() {
         List<DepositAccount> depositAccounts = (List<DepositAccount>) depositAccountRepository.findAll();
         return depositAccounts.stream().collect(Collectors.toList());
+    }
+
+    public DepositAccount getDepositAccountById(Long id) {
+        Optional<DepositAccount> getDepositAccount = depositAccountRepository.findById(id);
+        return depositAccountRepository.save(getDepositAccount.get());
     }
 }

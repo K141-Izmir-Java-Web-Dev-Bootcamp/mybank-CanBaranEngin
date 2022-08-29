@@ -1,7 +1,9 @@
 package org.kodluyoruz.mybank.controller;
 
+import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.AccountDto;
+import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.service.DepositAccountService;
 import org.modelmapper.ModelMapper;
@@ -38,6 +40,15 @@ public class    DepositAccountController {
         List<DepositAccount> depositAccounts = depositAccountService.getAll();
 
         return ResponseEntity.ok(depositAccounts);
+    }
+
+    @GetMapping("DepositAccount/{id}")
+    public ResponseEntity<AccountDto> getDepositAccountById(@PathVariable("id") Long id){
+        DepositAccount depositAccount = depositAccountService.getDepositAccountById(id);
+        AccountDto accountDto = modelMapper.map(depositAccount,AccountDto.class);
+
+        return ResponseEntity.ok(accountDto);
+
     }
 
 

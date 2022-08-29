@@ -1,44 +1,47 @@
 package org.kodluyoruz.mybank.controller;
 
-import org.hibernate.loader.plan.exec.process.spi.ReturnReader;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.service.CustomerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/")
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final ModelMapper modelMapper;
 
-
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(CustomerService customerService, ModelMapper modelMapper) {
         this.customerService = customerService;
+        this.modelMapper = modelMapper;
     }
 
     @PostMapping("customers")
 
     public ResponseEntity<CustomerDto> create(@RequestBody CustomerDto customerDto){
-        CustomerDto customers = customerService.create(customerDto);
-        return ResponseEntity.ok(customers);
+        Customer customers = customerService.create(customerDto);
+        CustomerDto customersDto = modelMapper.map(customers,CustomerDto.class);
+        return ResponseEntity.ok(customersDto);
     }
 
-    @GetMapping("customers/")
+    @GetMapping("customers")
 
     public ResponseEntity<List<CustomerDto>> getCustomers(){
-        List<CustomerDto> getCustomers = customerService.getCustomers();
-        return ResponseEntity.ok(getCustomers);
+        List<Customer> customers = customerService.getCustomers();
+        return ResponseEntity.ok(customers.stream().map(customer -> modelMapper.map(customer,CustomerDto.class)).collect(Collectors.toList()));
     }
 
     @GetMapping("customers/{id}")
-    public ResponseEntity<Customer> getCustomerById(@PathVariable ("id") Long id){
+    public ResponseEntity<CustomerDto> getCustomerById(@PathVariable ("id") Long id){
         Customer getCustomer = customerService.getCustomerById(id);
-        return ResponseEntity.ok(getCustomer);
+        CustomerDto getCustomerDto = modelMapper.map(getCustomer,CustomerDto.class);
+        return ResponseEntity.ok(getCustomerDto);
 
     }
 

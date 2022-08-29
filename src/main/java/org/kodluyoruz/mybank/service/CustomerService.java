@@ -23,10 +23,10 @@ public class CustomerService implements CustomerServiceImpl {
     }
 
     @Override
-    public CustomerDto create(CustomerDto customerDto){
+    public Customer create(CustomerDto customerDto){
 
         Customer createdCustomer = modelMapper.map(customerDto,Customer.class);
-        return modelMapper.map(customerRepository.save(createdCustomer),CustomerDto.class);
+        return customerRepository.save(createdCustomer);
     }
 
     @Override
@@ -37,15 +37,14 @@ public class CustomerService implements CustomerServiceImpl {
     }
 
     @Override
-    public List<CustomerDto> getCustomers() {
+    public List<Customer> getCustomers() {
         List<Customer> customers = (List<Customer>) customerRepository.findAll();
-        return customers.stream().map(customer -> modelMapper.map(customer,CustomerDto.class)).collect(Collectors.toList());
+        return customers;
     }
 
     @Override
     public CustomerDto updateCustomer(Long id,CustomerDto customerDto) {
         Optional<Customer> customerResult = customerRepository.findById(id);
-
         if(customerResult.isPresent()){
             customerResult.get().setFirstName(customerDto.getFirstName());
             customerResult.get().setLastName(customerDto.getLastName());

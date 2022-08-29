@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DepositAccountService implements DepositAccountServiceImpl {
@@ -31,7 +33,9 @@ public class DepositAccountService implements DepositAccountServiceImpl {
         depositAccount.setCustomer(customerService.getCustomerById(accountDto.getCustomerId()));
         return depositAccountRepository.save(depositAccount);
     }
-
-
-
+    @Override
+    public List<DepositAccount> getAll() {
+        List<DepositAccount> depositAccounts = (List<DepositAccount>) depositAccountRepository.findAll();
+        return depositAccounts.stream().collect(Collectors.toList());
+    }
 }

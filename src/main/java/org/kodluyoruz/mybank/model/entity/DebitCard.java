@@ -8,9 +8,6 @@ import javax.persistence.*;
 @Table
 @Data
 public class DebitCard extends Card{
-    @Id
-    @GeneratedValue
-    private Long id;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

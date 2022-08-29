@@ -10,4 +10,6 @@ import java.util.List;
 public interface DepositAccountServiceImpl {
     public DepositAccount create(AccountDto accountDto);
 
+    public List<DepositAccount> getAll();
+
 }

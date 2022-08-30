@@ -25,6 +25,5 @@ public class Transfer {
     @ManyToMany(mappedBy = "transferList")
     private Set<Customer> customers;
 
-
 }
 

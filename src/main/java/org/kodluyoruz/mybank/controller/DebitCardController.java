@@ -5,10 +5,7 @@ import org.kodluyoruz.mybank.model.entity.dto.DebitCardDto;
 import org.kodluyoruz.mybank.service.DebitCardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -23,7 +20,7 @@ public class DebitCardController {
         this.modelMapper = modelMapper;
     }
 
-    @PutMapping("DebitCard")
+    @PostMapping("DebitCard")
     public ResponseEntity<DebitCardDto> create(@RequestBody DebitCardDto debitCardDto){
         DebitCard createDebitCard = debitCardService.create(debitCardDto);
         DebitCardDto createDebitCardDto = modelMapper.map(createDebitCard,DebitCardDto.class);

@@ -50,7 +50,6 @@ public class CustomerService implements CustomerServiceImpl {
             customerResult.get().setLastName(customerDto.getLastName());
             customerResult.get().setBirthday(customerDto.getBirthday());
             customerResult.get().setEmail(customerDto.getEmail());
-            customerResult.get().setPassword(customerDto.getPassword());
             customerResult.get().setIdentityNumber(customerDto.getIdentityNumber());
             return modelMapper.map(customerRepository.save(customerResult.get()),CustomerDto.class);
         }

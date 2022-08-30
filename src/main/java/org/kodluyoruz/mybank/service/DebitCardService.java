@@ -31,6 +31,8 @@ public class DebitCardService implements DebitCardServiceImpl {
         DebitCard createdDebitCard = modelMapper.map(debitCardDto, DebitCard.class);
         createdDebitCard.setCustomer(customerService.getCustomerById(debitCardDto.getCustomerId()));
         createdDebitCard.setDepositAccount(depositAccountService.getDepositAccountById(debitCardDto.getAccountId()));
+        createdDebitCard.setCustomerFirstName(customerService.getCustomerById(debitCardDto.getCustomerId()).getFirstName());
+        createdDebitCard.setCustomerLastName(customerService.getCustomerById(debitCardDto.getCustomerId()).getLastName());
         return debitCardRepository.save(createdDebitCard);
 
     }

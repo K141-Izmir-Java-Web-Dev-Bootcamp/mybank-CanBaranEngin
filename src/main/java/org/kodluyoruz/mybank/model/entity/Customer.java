@@ -22,8 +22,6 @@ public class Customer {
     @Column(name = "Last_Name",length = 50)
     private String lastName;
     @Column(name = "Password",length = 100)
-    private String password;
-    @Column(name = "Email",length = 20)
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;

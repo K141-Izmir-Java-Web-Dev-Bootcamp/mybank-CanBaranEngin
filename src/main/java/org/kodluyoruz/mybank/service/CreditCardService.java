@@ -28,6 +28,8 @@ public class CreditCardService implements CreditCardImpl {
         CreditCard creditCards = modelMapper.map(creditCardDto,CreditCard.class);
         creditCards.setCustomer(customerService.getCustomerById(creditCardDto.getCustomerId()));
         creditCards.setDepositAccount(depositAccountService.getDepositAccountById(creditCardDto.getAccountId()));
+        creditCards.setCustomerFirstName(customerService.getCustomerById(creditCardDto.getCustomerId()).getFirstName());
+        creditCards.setCustomerLastName(customerService.getCustomerById(creditCardDto.getCustomerId()).getLastName());
 
         return creditCardRepository.save(creditCards);
     }

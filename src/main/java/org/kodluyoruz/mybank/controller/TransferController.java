@@ -28,10 +28,11 @@ public class TransferController {
 
 
     @PostMapping("/transfer")
-    public ResponseEntity<Transfer> create(@RequestBody TransferDto transferDto){
+    public ResponseEntity<TransferDto> create(@RequestBody TransferDto transferDto){
         Transfer transfers = transferService.create(transferDto);
+        TransferDto createdtransfer = modelMapper.map(transfers,TransferDto.class);
 
-        return ResponseEntity.ok(transfers);
+        return ResponseEntity.ok(createdtransfer);
 
     }
 

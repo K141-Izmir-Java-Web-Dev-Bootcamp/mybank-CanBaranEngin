@@ -7,6 +7,9 @@ import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Service
 public class TransferService {
 
@@ -23,11 +26,14 @@ public class TransferService {
 
     public Transfer create(TransferDto transferDto) {
         Transfer transfer = modelMapper.map(transferDto,Transfer.class);
-        DepositAccount depositAccount = depositAccountService.getDepositAccountByIban(transfer.getReceiverIBAN());
+        DepositAccount depositAccountReceiver = depositAccountService.getDepositAccountByIban(transfer.getReceiverIBAN());
+        DepositAccount depositAccountSender = depositAccountService.getDepositAccountByIban(transfer.getSenderIBAN());
 
-        if (transfer.getReceiverIBAN() == depositAccount.getIban()){
-           depositAccount.setAccountBalance(depositAccount.getAccountBalance()+transferDto.getMoneyValue());
+        transfer.setTransferDate(LocalDate.now());
 
+        if (transfer.getReceiverIBAN() == depositAccountReceiver.getIban()){
+           depositAccountReceiver.setAccountBalance(depositAccountReceiver.getAccountBalance()+transferDto.getMoneyValue());
+           depositAccountSender.setAccountBalance(depositAccountSender.getAccountBalance()-transferDto.getMoneyValue());
         }
 
         return transferRepository.save(transfer);

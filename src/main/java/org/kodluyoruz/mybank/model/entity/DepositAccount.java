@@ -20,6 +20,6 @@ public class DepositAccount extends Account {
     private DebitCard debitCard;
     @OneToOne(mappedBy = "depositAccount")
     private CreditCard creditCard;
-
+    private final String accountType="deposit";
 
 }

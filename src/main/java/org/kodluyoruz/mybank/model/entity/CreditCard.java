@@ -16,6 +16,8 @@ public class CreditCard extends Card{
     private DepositAccount depositAccount;
     @Column(name = "Credit_Card_Limit")
     private Double creditCardLimit;
+    private Double creditCardDebtValue=1000.0;
+    private final String cardType="CreditCard";
 
 
 }

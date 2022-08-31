@@ -4,6 +4,7 @@ import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.service.CreditCardService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class CreditCardController {
         this.creditCardService = creditCardService;
     }
 
-    @PostMapping("creditcard")
+    @PostMapping("creditCard")
 
     public ResponseEntity<CreditCardDto> create(@RequestBody CreditCardDto creditCardDto){
 
@@ -30,6 +31,25 @@ public class CreditCardController {
         createCreditCardDto.setAccountId(creditCardDto.getAccountId());
 
         return ResponseEntity.ok(createCreditCardDto);
+
+    }
+
+    @GetMapping("creditCardDebt/{id}")
+    public ResponseEntity<Double> getDebtById(@PathVariable Long id){
+        Double debt = creditCardService.getDebtById(id);
+        return ResponseEntity.ok(debt);
+    }
+
+    @PutMapping("creditCardPayDebt/{id}")
+    public ResponseEntity payDebt(@PathVariable Long id,Double moneyValue){
+
+        if(creditCardService.payDebt(id,moneyValue)){
+        return ResponseEntity.status(HttpStatus.OK).body("Dept has been payed successfully");
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debt payment proccess was gotten error ");
+
+
+
 
     }
 }

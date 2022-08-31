@@ -9,7 +9,6 @@ import java.time.LocalDate;
 public class AccountDto {
     private String name;
     private Long iban;
-    private LocalDate createdDate;
     private Double accountBalance;
     private String moneyType;
     private Long customerId;

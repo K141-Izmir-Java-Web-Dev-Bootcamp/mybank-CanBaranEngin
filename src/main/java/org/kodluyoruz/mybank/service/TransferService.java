@@ -7,6 +7,7 @@ import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -34,8 +35,10 @@ public class TransferService {
         if (transfer.getReceiverIBAN() == depositAccountReceiver.getIban()){
            depositAccountReceiver.setAccountBalance(depositAccountReceiver.getAccountBalance()+transferDto.getMoneyValue());
            depositAccountSender.setAccountBalance(depositAccountSender.getAccountBalance()-transferDto.getMoneyValue());
+            return transferRepository.save(transfer);
         }
 
-        return transferRepository.save(transfer);
+        return null;
+
     }
 }

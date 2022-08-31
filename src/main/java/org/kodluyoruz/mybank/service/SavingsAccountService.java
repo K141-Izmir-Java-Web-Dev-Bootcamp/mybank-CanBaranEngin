@@ -11,6 +11,7 @@ import org.kodluyoruz.mybank.service.impl.SavingsAccountServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     public SavingsAccount create(AccountDto accountDto){
         SavingsAccount savingsAccount = modelMapper.map(accountDto,SavingsAccount.class);
         savingsAccount.setCustomer(customerService.getCustomerById(accountDto.getCustomerId()));
+        savingsAccount.setCreatedDate(LocalDate.now());
         return savingsAccountRepository.save(savingsAccount);
     }
 

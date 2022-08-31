@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class DepositAccountService implements DepositAccountServiceImpl {
     public DepositAccount create(AccountDto accountDto){
         DepositAccount depositAccount = modelMapper.map(accountDto,DepositAccount.class);
         depositAccount.setCustomer(customerService.getCustomerById(accountDto.getCustomerId()));
+        depositAccount.setCreatedDate(LocalDate.now());
         return depositAccountRepository.save(depositAccount);
     }
     @Override

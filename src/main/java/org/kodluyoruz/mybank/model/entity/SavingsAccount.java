@@ -14,10 +14,9 @@ import java.time.LocalDate;
 @Data
 public class SavingsAccount extends Account {
 
-    @Column(name = "Savings_Account_Type")
-    private String savingsAccountType;
     @Column(name="Bank_Rate")
     private Double bankRate;
+    private final String accountType="savings";
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

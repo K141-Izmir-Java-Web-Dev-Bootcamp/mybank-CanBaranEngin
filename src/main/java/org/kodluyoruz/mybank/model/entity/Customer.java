@@ -33,6 +33,8 @@ public class Customer {
     private List<DebitCard> debitCardList ;
     @OneToMany(mappedBy = "customer")
     private List<CreditCard> creditCardList ;
+    @OneToMany(mappedBy = "customer")
+    private List<Shopping> shoppingList;
     @ManyToMany
     @JoinTable(
             name = "Customers_Transfer ",

@@ -5,11 +5,12 @@ import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.ShoppingDto;
 import org.kodluyoruz.mybank.repository.CreditCardRepository;
 import org.kodluyoruz.mybank.repository.DepositAccountRepository;
+import org.kodluyoruz.mybank.service.impl.ShoppingServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ShoppingService {
+public class ShoppingService implements ShoppingServiceImpl {
 
     private final DepositAccountService depositAccountService;
     private final DepositAccountRepository depositAccountRepository;
@@ -28,7 +29,7 @@ public class ShoppingService {
         this.modelMapper = modelMapper;
     }
 
-
+    @Override
     public void create(ShoppingDto shoppingDto) {
 
 
@@ -43,6 +44,8 @@ public class ShoppingService {
             depositAccount.setAccountBalance(depositAccount.getAccountBalance()-shoppingDto.getSpending());
             depositAccountRepository.save(depositAccount);
         }
+
+
 
 
     }

@@ -25,8 +25,6 @@ public class ShoppingController {
     public ResponseEntity create(@RequestBody ShoppingDto shoppingDto){
 
         shoppingService.create(shoppingDto);
-
-
         return ResponseEntity.status(HttpStatus.CREATED).body("Shopping process has been done successfully");
     }
 

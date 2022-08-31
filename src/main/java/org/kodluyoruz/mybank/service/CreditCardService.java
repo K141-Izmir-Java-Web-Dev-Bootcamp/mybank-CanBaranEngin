@@ -41,7 +41,7 @@ public class CreditCardService implements CreditCardImpl {
 
         return creditCardRepository.save(creditCards);
     }
-
+    @Override
     public CreditCard getCreditCardbyId(Long id){
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         return creditCard.orElse(null);
@@ -53,7 +53,7 @@ public class CreditCardService implements CreditCardImpl {
     }
 
 
-
+    @Override
     public Boolean payDebt(Long id,Double moneyValue) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         DepositAccount depositAccount = creditCard.get().getDepositAccount();

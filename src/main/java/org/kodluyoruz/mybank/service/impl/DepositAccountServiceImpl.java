@@ -12,4 +12,8 @@ public interface DepositAccountServiceImpl {
 
     public List<DepositAccount> getAll();
 
+    public DepositAccount getDepositAccountById(Long id);
+
+    public DepositAccount getDepositAccountByIban(Long iban);
+
 }

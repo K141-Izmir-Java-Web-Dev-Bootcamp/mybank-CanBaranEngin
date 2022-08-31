@@ -6,6 +6,7 @@ import org.kodluyoruz.mybank.service.CustomerService;
 import org.kodluyoruz.mybank.service.DepositAccountService;
 import org.kodluyoruz.mybank.service.TransferService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,11 +29,9 @@ public class TransferController {
 
 
     @PostMapping("/transfer")
-    public ResponseEntity<TransferDto> create(@RequestBody TransferDto transferDto){
-        Transfer transfers = transferService.create(transferDto);
-        TransferDto createdtransfer = modelMapper.map(transfers,TransferDto.class);
-
-        return ResponseEntity.ok(createdtransfer);
+    public ResponseEntity create(@RequestBody TransferDto transferDto){
+        transferService.create(transferDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Transferring process has been done successfully");
 
     }
 

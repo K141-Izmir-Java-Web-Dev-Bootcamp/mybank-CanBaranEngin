@@ -1,11 +1,15 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.dto.DebitCardDto;
 import org.kodluyoruz.mybank.repository.DebitCardRepository;
 import org.kodluyoruz.mybank.service.impl.DebitCardServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DebitCardService implements DebitCardServiceImpl {
@@ -35,5 +39,17 @@ public class DebitCardService implements DebitCardServiceImpl {
         createdDebitCard.setCustomerLastName(customerService.getCustomerById(debitCardDto.getCustomerId()).getLastName());
         return debitCardRepository.save(createdDebitCard);
 
+    }
+
+    public List<DebitCard> getAll() {
+        List<DebitCard> debitCard = (List<DebitCard>) debitCardRepository.findAll();
+
+        return debitCard;
+
+    }
+
+    public DebitCard getCreditCardbyId(Long id){
+        Optional<DebitCard> debitCard = debitCardRepository.findById(id);
+        return debitCard.orElse(null);
     }
 }

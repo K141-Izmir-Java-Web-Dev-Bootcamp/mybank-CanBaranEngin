@@ -34,6 +34,12 @@ public class CreditCardController {
 
     }
 
+    @GetMapping("creditCardById/{id}")
+    public ResponseEntity<CreditCard> getCreditCardById(@PathVariable Long id){
+        CreditCard creditCard = creditCardService.getCreditCardbyId(id);
+        return ResponseEntity.ok(creditCard);
+    }
+
     @GetMapping("creditCardDebt/{id}")
     public ResponseEntity<Double> getDebtById(@PathVariable Long id){
         Double debt = creditCardService.getDebtById(id);

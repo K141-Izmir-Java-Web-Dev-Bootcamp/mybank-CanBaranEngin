@@ -14,6 +14,6 @@ public class DebitCard extends Card{
     @OneToOne
     @JoinColumn(name = "depositAccount_id")
     private DepositAccount depositAccount;
-    private final String cardType="DebitCard";
+
 
 }

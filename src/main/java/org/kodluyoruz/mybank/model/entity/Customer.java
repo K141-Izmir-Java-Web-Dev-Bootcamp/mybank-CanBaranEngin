@@ -29,11 +29,11 @@ public class Customer {
     private List<DepositAccount> depositAccount;
     @OneToMany
     private List<SavingsAccount> savingsAccount;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany
     private List<DebitCard> debitCardList ;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany
     private List<CreditCard> creditCardList ;
-    @OneToMany(mappedBy = "customer")
+    @OneToMany
     private List<Shopping> shoppingList;
     @ManyToMany
     @JoinTable(

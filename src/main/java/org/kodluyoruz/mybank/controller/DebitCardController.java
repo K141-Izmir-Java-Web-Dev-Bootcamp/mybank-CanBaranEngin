@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/")
 public class DebitCardController {
@@ -28,5 +30,14 @@ public class DebitCardController {
         createDebitCardDto.setAccountId(debitCardDto.getAccountId());
         return ResponseEntity.ok(createDebitCardDto);
 
+    }
+
+    @GetMapping("DebitCards")
+
+    public ResponseEntity<List<DebitCard>> getAll(){
+
+        List<DebitCard> debitCardList = debitCardService.getAll();
+
+        return ResponseEntity.ok(debitCardList);
     }
 }

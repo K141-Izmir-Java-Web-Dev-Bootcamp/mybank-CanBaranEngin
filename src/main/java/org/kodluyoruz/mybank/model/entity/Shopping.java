@@ -16,5 +16,7 @@ public class Shopping {
     @ManyToOne
     @JoinColumn(name="customer_id")
     private Customer customer;
+    @Column
+    private CardType cardType;
 
 }

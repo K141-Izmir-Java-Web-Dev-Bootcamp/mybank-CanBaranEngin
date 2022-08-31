@@ -16,9 +16,9 @@ public class DepositAccount extends Account {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToOne(mappedBy = "depositAccount")
+    @OneToOne
     private DebitCard debitCard;
-    @OneToOne(mappedBy = "depositAccount")
+    @OneToOne
     private CreditCard creditCard;
     private final String accountType="deposit";
 

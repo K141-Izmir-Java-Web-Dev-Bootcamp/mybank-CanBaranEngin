@@ -4,6 +4,7 @@ import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.repository.CreditCardRepository;
+import org.kodluyoruz.mybank.repository.DepositAccountRepository;
 import org.kodluyoruz.mybank.service.impl.CreditCardImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,14 @@ public class CreditCardService implements CreditCardImpl {
     private final CustomerService customerService;
     private final DepositAccountService depositAccountService;
 
-    public CreditCardService(CreditCardRepository creditCardRepository, ModelMapper modelMapper, CustomerService customerService, DepositAccountService depositAccountService) {
+    private final DepositAccountRepository depositAccountRepository;
+
+    public CreditCardService(CreditCardRepository creditCardRepository, ModelMapper modelMapper, CustomerService customerService, DepositAccountService depositAccountService, DepositAccountRepository depositAccountRepository) {
         this.creditCardRepository = creditCardRepository;
         this.modelMapper = modelMapper;
         this.customerService = customerService;
         this.depositAccountService = depositAccountService;
+        this.depositAccountRepository = depositAccountRepository;
     }
 
 
@@ -33,15 +37,22 @@ public class CreditCardService implements CreditCardImpl {
         creditCards.setDepositAccount(depositAccountService.getDepositAccountById(creditCardDto.getAccountId()));
         creditCards.setCustomerFirstName(customerService.getCustomerById(creditCardDto.getCustomerId()).getFirstName());
         creditCards.setCustomerLastName(customerService.getCustomerById(creditCardDto.getCustomerId()).getLastName());
+        //depositAccountService.getDepositAccountById(creditCardDto.getAccountId()).setCreditCard(creditCards);
 
         return creditCardRepository.save(creditCards);
     }
 
+    public CreditCard getCreditCardbyId(Long id){
+        Optional<CreditCard> creditCard = creditCardRepository.findById(id);
+        return creditCard.orElse(null);
+    }
 
     public Double getDebtById(Long id) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         return creditCard.map(CreditCard::getCreditCardDebtValue).orElse(null);
     }
+
+
 
     public Boolean payDebt(Long id,Double moneyValue) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
@@ -49,11 +60,19 @@ public class CreditCardService implements CreditCardImpl {
 
         if(creditCard.isPresent()){
             creditCard.get().setCreditCardDebtValue(creditCard.get().getCreditCardDebtValue()-moneyValue);
+            creditCard.get().setCreditCardLimit(creditCard.get().getCreditCardLimit()+moneyValue);
+            creditCardRepository.save(creditCard.get());
             depositAccount.setAccountBalance(depositAccount.getAccountBalance()-moneyValue);
+            depositAccountRepository.save(depositAccount);
+
+
             return true;
         }
 
         return false;
 
+
     }
+
+
 }

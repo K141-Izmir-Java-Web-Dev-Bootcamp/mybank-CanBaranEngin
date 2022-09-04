@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @MappedSuperclass
@@ -16,7 +13,10 @@ import java.io.Serializable;
 @Data
 public class Card implements Serializable {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "card_sequence",
+            sequenceName = "card_sequence",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "card_sequence")
     private Long id;
     @Column(name = "Customer_Firstname")
     private String customerFirstName;

@@ -24,8 +24,9 @@ public class CustomerService implements CustomerServiceImpl {
 
     @Override
     public Customer create(CustomerDto customerDto){
-
         Customer createdCustomer = modelMapper.map(customerDto,Customer.class);
+        long generatedLong = 1000L + (long) (Math.random() * (9000L - 1000L));
+        createdCustomer.setIdentityNumber(generatedLong);
         return customerRepository.save(createdCustomer);
     }
 
@@ -50,7 +51,6 @@ public class CustomerService implements CustomerServiceImpl {
             customerResult.get().setLastName(customerDto.getLastName());
             customerResult.get().setBirthday(customerDto.getBirthday());
             customerResult.get().setEmail(customerDto.getEmail());
-            customerResult.get().setIdentityNumber(customerDto.getIdentityNumber());
             return modelMapper.map(customerRepository.save(customerResult.get()),CustomerDto.class);
         }
 

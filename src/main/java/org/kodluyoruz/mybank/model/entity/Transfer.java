@@ -7,12 +7,15 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table
+@Table(name="Transfers")
 @Data
 public class Transfer {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "transfer_sequence",
+            sequenceName = "transfer_sequence",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "transfer_sequence")
     private Long id;
     @Column(name = "Sender_IBAN")
     private Long SenderIBAN;

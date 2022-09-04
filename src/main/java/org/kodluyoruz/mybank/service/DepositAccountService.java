@@ -32,6 +32,9 @@ public class DepositAccountService implements DepositAccountServiceImpl {
     @Override
     public DepositAccount create(AccountDto accountDto){
         DepositAccount depositAccount = modelMapper.map(accountDto,DepositAccount.class);
+        long generatedLong = 100000000L + (long) (Math.random() * (900000000L - 100000000L));
+        depositAccount.setIban(generatedLong);
+        depositAccount.setCustomerIdentityNumber(customerService.getCustomerById(accountDto.getCustomerId()).getIdentityNumber());
         depositAccount.setCustomer(customerService.getCustomerById(accountDto.getCustomerId()));
         depositAccount.setCreatedDate(LocalDate.now());
         return depositAccountRepository.save(depositAccount);

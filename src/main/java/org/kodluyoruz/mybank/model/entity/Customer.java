@@ -12,10 +12,15 @@ import java.util.Set;
 @Table(name = "Customers")
 @Data
 public class Customer {
+
+
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "customer_sequence",
+            sequenceName = "customer_sequence",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "customer_sequence")
     private Long id;
-    @Column(name = "Identity_Number",length = 20,unique = true)
+    @Column(name = "IdentiytyNumber")
     private Long identityNumber;
     @Column(name = "First_Name",length = 50)
     private String firstName;
@@ -41,5 +46,8 @@ public class Customer {
             joinColumns = @JoinColumn(name = "Customers_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "Transfer_id",referencedColumnName = "id"))
     private Set<Transfer> transferList;
+
+
+
 
 }

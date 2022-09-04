@@ -15,7 +15,10 @@ import java.time.LocalDate;
 @Data
 public class Account implements Serializable {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "account_sequence",
+            sequenceName = "account_sequence",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "account_sequence")
     private Long id;
     @Column(name = "Account_Name")
     private String name;
@@ -27,6 +30,9 @@ public class Account implements Serializable {
     private Double accountBalance;
     @Column(name = "Money_Type",length = 10)
     private String moneyType;
+    @Column(name = "CustomerIdentity_Number",length = 20)
+    private Long customerIdentityNumber;
+
 
 
 }

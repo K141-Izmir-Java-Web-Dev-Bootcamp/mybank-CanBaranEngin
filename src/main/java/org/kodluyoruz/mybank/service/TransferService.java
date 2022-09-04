@@ -40,7 +40,6 @@ public class TransferService implements TrasnferServiceImpl {
         Transfer transfer = modelMapper.map(transferDto,Transfer.class);
         DepositAccount depositAccountReceiver = depositAccountService.getDepositAccountByIban(transfer.getReceiverIBAN());
         DepositAccount depositAccountSender = depositAccountService.getDepositAccountByIban(transfer.getSenderIBAN());
-        //SavingsAccount savingsAccountSender = savingsAccountService.getSavingsAccountByIban(transfer.getSenderIBAN());
         SavingsAccount savingsAccountReceiver = savingsAccountService.getSavingsAccountByIban(transfer.getReceiverIBAN());
         transfer.setTransferDate(LocalDate.now());
 

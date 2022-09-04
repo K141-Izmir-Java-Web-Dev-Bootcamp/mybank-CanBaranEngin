@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "DebitCards")
 @Data
 public class DebitCard extends Card{
     @ManyToOne

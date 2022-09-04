@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Data
 public class AccountDto {
     private String name;
-    private Long iban;
     private Double accountBalance;
     private String moneyType;
     private Long customerId;

@@ -5,11 +5,14 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Shopping")
+@Table(name = "Shoppings")
 @Data
 public class Shopping {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "shopping_sequence",
+            sequenceName = "shopping_sequence",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "shopping_sequence")
     private Long id;
     @Column(name = "spending")
     private Long spending;

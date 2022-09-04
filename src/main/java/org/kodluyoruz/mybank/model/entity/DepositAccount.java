@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table
+@Table(name = "DepositAccounts")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

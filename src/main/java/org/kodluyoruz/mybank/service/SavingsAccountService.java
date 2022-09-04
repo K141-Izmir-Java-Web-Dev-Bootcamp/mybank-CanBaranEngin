@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,5 +42,11 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     public List<SavingsAccount> getAll() {
         List<SavingsAccount> savingsAccounts = (List<SavingsAccount>) savingsAccountRepository.findAll();
         return savingsAccounts.stream().collect(Collectors.toList());
+    }
+
+    public SavingsAccount getSavingsAccountByIban(Long iban) {
+        Optional<SavingsAccount> getSavingsAccountByIban = savingsAccountRepository.findSavingsAccountByIban(iban);
+        return getSavingsAccountByIban.map(savingsAccountRepository::save).orElse(null);
+
     }
 }

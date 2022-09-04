@@ -44,11 +44,12 @@ public class DepositAccountService implements DepositAccountServiceImpl {
     @Override
     public DepositAccount getDepositAccountById(Long id) {
         Optional<DepositAccount> getDepositAccount = depositAccountRepository.findById(id);
-        return depositAccountRepository.save(getDepositAccount.get());
+        return getDepositAccount.map(depositAccountRepository::save).orElse(null);
+
     }
     @Override
     public DepositAccount getDepositAccountByIban(Long iban) {
         Optional<DepositAccount> getDepositAccountByIban = depositAccountRepository.findDepositAccountByIban(iban);
-        return getDepositAccountByIban.map(depositAccountRepository::save).orElse(null);
+        return getDepositAccountByIban.orElse(null);
     }
 }

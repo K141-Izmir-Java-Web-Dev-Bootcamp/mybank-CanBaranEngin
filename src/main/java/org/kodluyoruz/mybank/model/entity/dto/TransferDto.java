@@ -16,7 +16,4 @@ public class TransferDto {
     private Long ReceiverIBAN;
     private Long SenderIBAN;
     private Double moneyValue;
-    private LocalDate transferDate;
-
-
 }

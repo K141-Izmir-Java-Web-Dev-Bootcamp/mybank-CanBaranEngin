@@ -55,4 +55,9 @@ public class DepositAccountService implements DepositAccountServiceImpl {
         Optional<DepositAccount> getDepositAccountByIban = depositAccountRepository.findDepositAccountByIban(iban);
         return getDepositAccountByIban.orElse(null);
     }
+
+    public List<DepositAccount> getDepositAccountByIdentityNumber(Long identityNumber) {
+        Optional<List<DepositAccount>> getDepositAccountByIdentityNumber = depositAccountRepository.findDepositAccountByCustomerIdentityNumber(identityNumber);
+        return getDepositAccountByIdentityNumber.orElse(null);
+    }
 }

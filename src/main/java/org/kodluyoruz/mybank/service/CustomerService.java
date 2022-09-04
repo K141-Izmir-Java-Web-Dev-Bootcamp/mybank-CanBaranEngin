@@ -1,24 +1,32 @@
 package org.kodluyoruz.mybank.service;
 
 import org.kodluyoruz.mybank.model.entity.Customer;
+import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
+import org.kodluyoruz.mybank.repository.DepositAccountRepository;
 import org.kodluyoruz.mybank.service.impl.CustomerServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerService implements CustomerServiceImpl {
 
     private final CustomerRepository customerRepository;
+    @Autowired
+    DepositAccountService depositAccountService;
+
+    @Autowired
+    DepositAccountRepository depositAccountRepository;
     private final ModelMapper modelMapper;
 
     public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
+
         this.modelMapper = modelMapper;
     }
 
@@ -60,13 +68,22 @@ public class CustomerService implements CustomerServiceImpl {
     @Override
     public Boolean deleteCustomer(Long id) {
         Optional<Customer> customers = customerRepository.findById(id);
+        List<DepositAccount> depositAccounts = depositAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
+        if(customers.isPresent()){
+            for (int i = 0; i < depositAccounts.size() ; i++) {
+                if(depositAccounts.get(i).getAccountBalance()!=0){
+                    i=depositAccounts.size()-1;
+                }
+                else {
+                    if(i==depositAccounts.size()-1){
+                        depositAccountRepository.deleteAll();
+                        customerRepository.deleteById(id);
+                        return true;
+                    }
 
-        if(customers.isPresent()) {
-            customerRepository.deleteById(id);
-            return true;
+                }
+            }
         }
         return false;
     }
-
-
 }

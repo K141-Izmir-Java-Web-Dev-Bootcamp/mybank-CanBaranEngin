@@ -31,6 +31,9 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     @Override
     public SavingsAccount create(AccountDto accountDto){
         SavingsAccount savingsAccount = modelMapper.map(accountDto,SavingsAccount.class);
+        long generatedLong = 100000000L + (long) (Math.random() * (900000000L - 100000000L));
+        savingsAccount.setIban(generatedLong);
+        savingsAccount.setCustomerIdentityNumber(customerService.getCustomerById(accountDto.getCustomerId()).getIdentityNumber());
         savingsAccount.setCustomer(customerService.getCustomerById(accountDto.getCustomerId()));
         savingsAccount.setCreatedDate(LocalDate.now());
         return savingsAccountRepository.save(savingsAccount);

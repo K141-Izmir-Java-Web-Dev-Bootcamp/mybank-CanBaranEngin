@@ -4,6 +4,7 @@ import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.service.CustomerService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,8 +53,8 @@ public class CustomerController {
     }
 
     @DeleteMapping("customers/{id}")
-    public ResponseEntity<Boolean> deleteCustomer(@PathVariable("id") Long id){
-        Boolean status = customerService.deleteCustomer(id);
-        return ResponseEntity.ok(status);
+    public ResponseEntity deleteCustomer(@PathVariable("id") Long id){
+        customerService.deleteCustomer(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Customer " + id + " deleted successfully.");
     }
 }

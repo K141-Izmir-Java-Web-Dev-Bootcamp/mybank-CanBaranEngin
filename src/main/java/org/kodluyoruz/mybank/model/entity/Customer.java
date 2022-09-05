@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
@@ -31,16 +32,22 @@ public class Customer {
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;
-    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany
     private List<DepositAccount> depositAccount;
+    @JsonIgnore
     @OneToMany
     private List<SavingsAccount> savingsAccount;
+    @JsonIgnore
     @OneToMany
     private List<DebitCard> debitCardList ;
+    @JsonIgnore
     @OneToMany
     private List<CreditCard> creditCardList ;
+    @JsonIgnore
     @OneToMany
     private List<Shopping> shoppingList;
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "Customers_Transfer ",

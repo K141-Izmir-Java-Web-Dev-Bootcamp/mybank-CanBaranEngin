@@ -35,9 +35,13 @@ public class DebitCardController {
     @GetMapping("DebitCards")
 
     public ResponseEntity<List<DebitCard>> getAll(){
-
         List<DebitCard> debitCardList = debitCardService.getAll();
-
         return ResponseEntity.ok(debitCardList);
+    }
+
+    @GetMapping("DebitCards/{id}")
+    public ResponseEntity<DebitCard> getDebitCardById(@PathVariable Long id){
+        DebitCard debitCard = debitCardService.getCreditCardById(id);
+        return ResponseEntity.ok(debitCard);
     }
 }

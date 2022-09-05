@@ -45,9 +45,6 @@ public class    DepositAccountController {
     @GetMapping("DepositAccount/{id}")
     public ResponseEntity<DepositAccount> getDepositAccountById(@PathVariable("id") Long id){
         DepositAccount depositAccount = depositAccountService.getDepositAccountById(id);
-        //AccountDto accountDto = modelMapper.map(depositAccount,AccountDto.class);
-        //accountDto.setCustomerId(depositAccount.getCustomer().getId());
-
         return ResponseEntity.ok(depositAccount);
 
     }

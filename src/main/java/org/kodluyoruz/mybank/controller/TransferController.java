@@ -8,10 +8,7 @@ import org.kodluyoruz.mybank.service.TransferService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -32,6 +29,14 @@ public class TransferController {
     public ResponseEntity create(@RequestBody TransferDto transferDto){
         transferService.create(transferDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Transferring process has been done successfully");
+
+    }
+
+    @GetMapping("/transfers/{id}")
+    public ResponseEntity getTransfersById(@PathVariable Long id){
+        Transfer getTransfer = transferService.getTransferById(id);
+        TransferDto transferDto=modelMapper.map(getTransfer,TransferDto.class);
+        return ResponseEntity.ok(transferDto);
 
     }
 

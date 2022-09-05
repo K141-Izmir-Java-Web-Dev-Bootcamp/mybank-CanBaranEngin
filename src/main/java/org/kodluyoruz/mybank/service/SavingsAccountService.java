@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.SavingsAccount;
 import org.kodluyoruz.mybank.model.entity.dto.AccountDto;
@@ -45,6 +46,11 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     public List<SavingsAccount> getAll() {
         List<SavingsAccount> savingsAccounts = (List<SavingsAccount>) savingsAccountRepository.findAll();
         return savingsAccounts.stream().collect(Collectors.toList());
+    }
+
+    public SavingsAccount getSavingsAccountById (Long id){
+        Optional<SavingsAccount> getSavingsAccount = savingsAccountRepository.findById(id);
+        return getSavingsAccount.map(savingsAccountRepository::save).orElseThrow(() -> new EntityNotFoundException("SavingsAccount"));
     }
 
     public SavingsAccount getSavingsAccountByIban(Long iban) {

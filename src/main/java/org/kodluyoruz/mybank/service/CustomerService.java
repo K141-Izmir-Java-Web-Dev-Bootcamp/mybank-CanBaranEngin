@@ -1,5 +1,8 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
+import org.kodluyoruz.mybank.exception.handler.GlobalExceptionHandler;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
@@ -10,11 +13,12 @@ import org.kodluyoruz.mybank.repository.DepositAccountRepository;
 import org.kodluyoruz.mybank.service.impl.CustomerServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
+@Slf4j
 @Service
 public class CustomerService implements CustomerServiceImpl {
 
@@ -46,13 +50,20 @@ public class CustomerService implements CustomerServiceImpl {
     @Override
     public Customer getCustomerById(long id){
         Optional<Customer> getCustomer = customerRepository.findById(id);
-        customerRepository.save(getCustomer.get());
-        return getCustomer.get();
+        if(getCustomer.isPresent()){
+            return getCustomer.get();
+        }
+        log.error("The customer doesn't exist");
+        throw new EntityNotFoundException("Customer");
     }
 
     @Override
     public List<Customer> getCustomers() {
         List<Customer> customers = (List<Customer>) customerRepository.findAll();
+        if(customers.isEmpty()){
+            log.error("The customers don't exist");
+           throw new EntityNotFoundException("CustomerList");
+        }
         return customers;
     }
 
@@ -93,6 +104,8 @@ public class CustomerService implements CustomerServiceImpl {
             }
 
         }
-        return false;
+        log.error("The customer to be deleted does not exist");
+        throw new EntityNotFoundException("Customer");
+
     }
 }

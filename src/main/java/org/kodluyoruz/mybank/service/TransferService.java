@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.SavingsAccount;
 import org.kodluyoruz.mybank.model.entity.Transfer;
@@ -10,6 +11,7 @@ import org.kodluyoruz.mybank.repository.TransferRepository;
 import org.kodluyoruz.mybank.service.impl.TrasnferServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -62,5 +64,10 @@ public class TransferService implements TrasnferServiceImpl {
         }
 
 
+    }
+
+    public Transfer getTransferById(Long id) {
+        Optional<Transfer> transfer = transferRepository.findById(id);
+        return transfer.orElseThrow(()-> new EntityNotFoundException("Transfer"));
     }
 }

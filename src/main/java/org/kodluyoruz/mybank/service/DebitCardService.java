@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.dto.DebitCardDto;
@@ -48,8 +49,8 @@ public class DebitCardService implements DebitCardServiceImpl {
 
     }
 
-    public DebitCard getCreditCardbyId(Long id){
+    public DebitCard getCreditCardById(Long id){
         Optional<DebitCard> debitCard = debitCardRepository.findById(id);
-        return debitCard.orElse(null);
+        return debitCard.orElseThrow(()->new EntityNotFoundException("DebitCard"));
     }
 }

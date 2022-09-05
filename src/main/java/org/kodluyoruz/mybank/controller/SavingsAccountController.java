@@ -39,6 +39,12 @@ public class SavingsAccountController {
         return ResponseEntity.ok(savingsAccounts);
     }
 
+    @GetMapping("SavingsAccount/{id}")
+    public ResponseEntity<SavingsAccount> getDepositAccountById(@PathVariable("id") Long id){
+        SavingsAccount savingsAccount = savingsAccountService.getSavingsAccountById(id);
+        return ResponseEntity.ok(savingsAccount);
+    }
+
 
 
 }

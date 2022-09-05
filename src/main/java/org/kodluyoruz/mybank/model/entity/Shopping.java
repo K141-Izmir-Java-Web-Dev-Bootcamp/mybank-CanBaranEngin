@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,7 +20,7 @@ public class Shopping {
     @ManyToOne
     @JoinColumn(name="customer_id")
     private Customer customer;
+    @JsonIgnore
     @Column
     private CardType cardType;
-
 }

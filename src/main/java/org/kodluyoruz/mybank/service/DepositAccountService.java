@@ -1,5 +1,7 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.Account;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
@@ -18,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class DepositAccountService implements DepositAccountServiceImpl {
 
     private final DepositAccountRepository depositAccountRepository;
@@ -47,7 +50,7 @@ public class DepositAccountService implements DepositAccountServiceImpl {
     @Override
     public DepositAccount getDepositAccountById(Long id) {
         Optional<DepositAccount> getDepositAccount = depositAccountRepository.findById(id);
-        return getDepositAccount.map(depositAccountRepository::save).orElse(null);
+        return getDepositAccount.map(depositAccountRepository::save).orElseThrow(() -> new EntityNotFoundException("DepositAccount"));
 
     }
     @Override

@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @Data
 public class DepositAccount extends Account {
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToOne

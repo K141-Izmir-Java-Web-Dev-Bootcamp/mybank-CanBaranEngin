@@ -1,7 +1,9 @@
 package org.kodluyoruz.mybank.controller;
 
 import org.kodluyoruz.mybank.model.entity.Shopping;
+import org.kodluyoruz.mybank.model.entity.Transfer;
 import org.kodluyoruz.mybank.model.entity.dto.ShoppingDto;
+import org.kodluyoruz.mybank.model.entity.dto.TransferDto;
 import org.kodluyoruz.mybank.service.ShoppingService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -26,6 +28,14 @@ public class ShoppingController {
 
         shoppingService.create(shoppingDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Shopping process has been done successfully");
+    }
+
+    @GetMapping("/shopping/{id}")
+    public ResponseEntity getShoppingById(@PathVariable Long id){
+        Shopping getShopping = shoppingService.getShoppingById(id);
+
+        return ResponseEntity.ok(getShopping);
+
     }
 
 }

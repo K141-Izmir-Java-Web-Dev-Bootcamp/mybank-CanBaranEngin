@@ -52,4 +52,9 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
         return getSavingsAccountByIban.map(savingsAccountRepository::save).orElse(null);
 
     }
+
+    public List<SavingsAccount> getDepositAccountByIdentityNumber(Long identityNumber) {
+        Optional<List<SavingsAccount>> getSavingsAccountByIdentityNumber = savingsAccountRepository.findSavingsAccountByCustomerIdentityNumber(identityNumber);
+        return getSavingsAccountByIdentityNumber.orElse(null);
+    }
 }

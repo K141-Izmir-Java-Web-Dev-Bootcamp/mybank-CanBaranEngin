@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CreditCardRepository extends PagingAndSortingRepository <CreditCard,Long> {
 
 
+
 }

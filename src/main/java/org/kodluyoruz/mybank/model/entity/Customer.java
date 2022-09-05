@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,11 +27,11 @@ public class Customer {
     private String firstName;
     @Column(name = "Last_Name",length = 50)
     private String lastName;
-    @Column(name = "Password",length = 100)
+    @Column(name = "Email",length = 100)
     private String email;
     @Column(name = "Birthday",length = 20)
     private LocalDate birthday;
-    @OneToMany
+    @OneToMany(mappedBy = "customer",fetch = FetchType.LAZY)
     private List<DepositAccount> depositAccount;
     @OneToMany
     private List<SavingsAccount> savingsAccount;

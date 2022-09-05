@@ -12,5 +12,5 @@ public interface DepositAccountRepository extends PagingAndSortingRepository<Dep
    Optional<List<DepositAccount>> findDepositAccountByCustomerIdentityNumber(Long customerIdentityNumber);
 
 
-
+   void deleteAllByCustomerId(Long id);
 }

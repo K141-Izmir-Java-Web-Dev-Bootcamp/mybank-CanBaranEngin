@@ -1,7 +1,9 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
+import org.kodluyoruz.mybank.model.entity.SavingsAccount;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.repository.DepositAccountRepository;
@@ -21,12 +23,15 @@ public class CustomerService implements CustomerServiceImpl {
     DepositAccountService depositAccountService;
 
     @Autowired
+    SavingsAccountService savingsAccountService;
+
+    @Autowired
     DepositAccountRepository depositAccountRepository;
+
     private final ModelMapper modelMapper;
 
     public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {
         this.customerRepository = customerRepository;
-
         this.modelMapper = modelMapper;
     }
 
@@ -69,20 +74,24 @@ public class CustomerService implements CustomerServiceImpl {
     public Boolean deleteCustomer(Long id) {
         Optional<Customer> customers = customerRepository.findById(id);
         List<DepositAccount> depositAccounts = depositAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
-        if(customers.isPresent()){
+        List<SavingsAccount> savingsAccounts = savingsAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
+        if(customers.isPresent() && savingsAccounts.isEmpty()){
             for (int i = 0; i < depositAccounts.size() ; i++) {
                 if(depositAccounts.get(i).getAccountBalance()!=0){
                     i=depositAccounts.size()-1;
                 }
                 else {
                     if(i==depositAccounts.size()-1){
-                        depositAccountRepository.deleteAll();
+                        for (int s = 0; s <depositAccounts.size() ; s++) {
+                            depositAccountRepository.delete(depositAccounts.get(s));
+                        }
                         customerRepository.deleteById(id);
                         return true;
                     }
 
                 }
             }
+
         }
         return false;
     }

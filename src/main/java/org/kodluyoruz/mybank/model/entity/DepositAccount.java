@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class DepositAccount extends Account {
-    @ManyToOne
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToOne

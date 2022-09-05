@@ -36,10 +36,10 @@ public class    DepositAccountController {
     }
 
     @GetMapping("DepositAccounts")
-    public ResponseEntity<List<DepositAccount>> getAll(){
+    public ResponseEntity<List<AccountDto>> getAll(){
         List<DepositAccount> depositAccounts = depositAccountService.getAll();
-
-        return ResponseEntity.ok(depositAccounts);
+        List<AccountDto> accountDtoList = depositAccounts.stream().map(depositAccount -> modelMapper.map(depositAccount,AccountDto.class)).collect(Collectors.toList());
+        return ResponseEntity.ok(accountDtoList);
     }
 
     @GetMapping("DepositAccount/{id}")

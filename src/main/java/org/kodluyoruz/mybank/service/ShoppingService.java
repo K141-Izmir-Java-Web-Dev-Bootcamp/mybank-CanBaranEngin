@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ShoppingService implements ShoppingServiceImpl {
 
     private final DepositAccountService depositAccountService;
@@ -43,21 +45,38 @@ public class ShoppingService implements ShoppingServiceImpl {
     @Override
     public void create(ShoppingDto shoppingDto) {
         Shopping shopping = modelMapper.map(shoppingDto,Shopping.class);
-        CreditCard creditCard =creditCardService.getCreditCardbyId(shoppingDto.getCardId());
+
+
         if(shoppingDto.getCardType()==1){
-            creditCard.setCreditCardDebtValue(creditCardService.getCreditCardbyId(shoppingDto.getCardId()).getCreditCardDebtValue()+shoppingDto.getSpending());
-            creditCard.setCreditCardLimit(creditCard.getCreditCardLimit()-shoppingDto.getSpending());
-            shopping.setCustomer(creditCard.getCustomer());
-            creditCardRepository.save(creditCard);
-            shoppingRepository.save(shopping);
+            CreditCard creditCard =creditCardService.getCreditCardbyId(shoppingDto.getCardId());
+            if(creditCard.getCreditCardLimit()>shoppingDto.getSpending()){
+                creditCard.setCreditCardDebtValue(creditCardService.getCreditCardbyId(shoppingDto.getCardId()).getCreditCardDebtValue()+shoppingDto.getSpending());
+                creditCard.setCreditCardLimit(creditCard.getCreditCardLimit()-shoppingDto.getSpending());
+                shopping.setCustomer(creditCard.getCustomer());
+                creditCardRepository.save(creditCard);
+                shoppingRepository.save(shopping);
+            }
+            else{
+                log.error("Insufficient balance !! ");
+                throw new NullPointerException("Insufficient balance !!");
+            }
+
         }
-        else {
-            DepositAccount depositAccount = depositAccountService.getDepositAccountById(debitCardService.getCreditCardById(shoppingDto.getCardId()).getDepositAccount().getId());
-            depositAccount.setAccountBalance(depositAccount.getAccountBalance()-shoppingDto.getSpending());
-            shopping.setCustomer(depositAccount.getCustomer());
-            depositAccountRepository.save(depositAccount);
-            shoppingRepository.save(shopping);
+        else if(shoppingDto.getCardType()==2 ) {
+            DepositAccount depositAccount = depositAccountService.getDepositAccountById(debitCardService.getDebitCardById(shoppingDto.getCardId()).getDepositAccount().getId());
+            if(depositAccount.getAccountBalance()>shoppingDto.getSpending()){
+                depositAccount.setAccountBalance(depositAccount.getAccountBalance()-shoppingDto.getSpending());
+                shopping.setCustomer(depositAccount.getCustomer());
+                depositAccountRepository.save(depositAccount);
+                shoppingRepository.save(shopping);
+            }
+            else{
+                log.error("Insufficient balance !! ");
+                throw new NullPointerException("Insufficient balance !!");
+            }
+
         }
+
 
     }
 

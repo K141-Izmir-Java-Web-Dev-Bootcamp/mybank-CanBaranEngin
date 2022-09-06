@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 public class DebitCardDto {
-    private int cvc;
+    private String cvc;
     private Long customerId;
     private Long accountId;
+    private String password;
 
 }
 

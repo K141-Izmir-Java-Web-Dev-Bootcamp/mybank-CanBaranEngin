@@ -33,7 +33,6 @@ public class CreditCardController {
         return ResponseEntity.ok(createCreditCardDto);
 
     }
-
     @GetMapping("creditCardById/{id}")
     public ResponseEntity<CreditCard> getCreditCardById(@PathVariable Long id){
         CreditCard creditCard = creditCardService.getCreditCardbyId(id);
@@ -47,12 +46,12 @@ public class CreditCardController {
     }
 
     @PutMapping("creditCardPayDebt/{id}")
-    public ResponseEntity payDebt(@PathVariable Long id,Double moneyValue){
+    public ResponseEntity payDebt(@PathVariable Long id,Double moneyValue,String password){
 
-        if(creditCardService.payDebt(id,moneyValue)){
+        if(creditCardService.payDebt(id,moneyValue,password)){
         return ResponseEntity.status(HttpStatus.OK).body("Dept has been payed successfully");
         }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debt payment proccess was gotten error ");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debt payment process was gotten error ");
 
 
 

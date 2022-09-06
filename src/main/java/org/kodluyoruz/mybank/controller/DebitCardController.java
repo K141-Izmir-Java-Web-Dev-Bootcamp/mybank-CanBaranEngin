@@ -41,7 +41,7 @@ public class DebitCardController {
 
     @GetMapping("DebitCards/{id}")
     public ResponseEntity<DebitCard> getDebitCardById(@PathVariable Long id){
-        DebitCard debitCard = debitCardService.getCreditCardById(id);
+        DebitCard debitCard = debitCardService.getDebitCardById(id);
         return ResponseEntity.ok(debitCard);
     }
 }

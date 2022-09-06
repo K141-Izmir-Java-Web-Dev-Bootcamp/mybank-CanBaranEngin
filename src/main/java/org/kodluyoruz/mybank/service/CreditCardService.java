@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
@@ -44,7 +45,7 @@ public class CreditCardService implements CreditCardImpl {
     @Override
     public CreditCard getCreditCardbyId(Long id){
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
-        return creditCard.orElse(null);
+        return creditCard.orElseThrow(()-> new EntityNotFoundException("CreditCard"));
     }
 
     public Double getDebtById(Long id) {
@@ -54,11 +55,11 @@ public class CreditCardService implements CreditCardImpl {
 
 
     @Override
-    public Boolean payDebt(Long id,Double moneyValue) {
+    public Boolean payDebt(Long id,Double moneyValue,String password) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         DepositAccount depositAccount = creditCard.get().getDepositAccount();
 
-        if(creditCard.isPresent()){
+        if(creditCard.isPresent() && creditCard.get().getPassword().equals(password)){
             creditCard.get().setCreditCardDebtValue(creditCard.get().getCreditCardDebtValue()-moneyValue);
             creditCard.get().setCreditCardLimit(creditCard.get().getCreditCardLimit()+moneyValue);
             creditCardRepository.save(creditCard.get());

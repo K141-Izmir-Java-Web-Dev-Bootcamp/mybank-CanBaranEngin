@@ -49,7 +49,7 @@ public class DebitCardService implements DebitCardServiceImpl {
 
     }
 
-    public DebitCard getCreditCardById(Long id){
+    public DebitCard getDebitCardById(Long id){
         Optional<DebitCard> debitCard = debitCardRepository.findById(id);
         return debitCard.orElseThrow(()->new EntityNotFoundException("DebitCard"));
     }

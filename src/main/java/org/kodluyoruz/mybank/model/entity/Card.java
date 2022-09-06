@@ -22,6 +22,8 @@ public class Card implements Serializable {
     private String customerFirstName;
     @Column(name="Customer_Lastname")
     private String customerLastName;
-    @Column(name="CVC")
-    private int cvc;
+    @Column(name="CVC",length = 3)
+    private String cvc;
+    @Column(name="password",nullable = false,length = 4)
+    private String password;
 }

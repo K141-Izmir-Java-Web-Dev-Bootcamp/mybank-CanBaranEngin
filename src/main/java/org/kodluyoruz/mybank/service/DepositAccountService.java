@@ -42,15 +42,16 @@ public class DepositAccountService implements DepositAccountServiceImpl {
         depositAccount.setCreatedDate(LocalDate.now());
         return depositAccountRepository.save(depositAccount);
     }
+
     @Override
-    public List<DepositAccount> getAll() {
-        List<DepositAccount> depositAccounts = (List<DepositAccount>) depositAccountRepository.findAll();
-        return depositAccounts.stream().collect(Collectors.toList());
+    public List<DepositAccount> getAll(){
+        return depositAccountRepository.findAll();
     }
+
     @Override
     public DepositAccount getDepositAccountById(Long id) {
         Optional<DepositAccount> getDepositAccount = depositAccountRepository.findById(id);
-        return getDepositAccount.map(depositAccountRepository::save).orElseThrow(() -> new EntityNotFoundException("DepositAccount"));
+        return getDepositAccount.orElseThrow(() -> new EntityNotFoundException("DepositAccount"));
 
     }
     @Override

@@ -24,4 +24,10 @@ public class DepositAccount extends Account {
     private CreditCard creditCard;
     private final String accountType="deposit";
 
+    public DepositAccount(Long id, Long iban, Long customerIdentityNumber, Customer customer, DebitCard debitCard, CreditCard creditCard) {
+        super(id, iban, customerIdentityNumber);
+        this.customer = customer;
+        this.debitCard = debitCard;
+        this.creditCard = creditCard;
+    }
 }

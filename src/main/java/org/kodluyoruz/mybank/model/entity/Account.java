@@ -33,6 +33,9 @@ public class Account implements Serializable {
     @Column(name = "CustomerIdentity_Number",length = 20)
     private Long customerIdentityNumber;
 
-
-
+    public Account(Long id, Long iban, Long customerIdentityNumber) {
+        this.id = id;
+        this.iban = iban;
+        this.customerIdentityNumber = customerIdentityNumber;
+    }
 }

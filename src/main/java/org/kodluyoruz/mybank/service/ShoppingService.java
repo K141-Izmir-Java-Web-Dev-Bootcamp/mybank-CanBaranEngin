@@ -1,6 +1,7 @@
 package org.kodluyoruz.mybank.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kodluyoruz.mybank.exception.ArithmeticException;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
@@ -45,8 +46,6 @@ public class ShoppingService implements ShoppingServiceImpl {
     @Override
     public void create(ShoppingDto shoppingDto) {
         Shopping shopping = modelMapper.map(shoppingDto,Shopping.class);
-
-
         if(shoppingDto.getCardType()==1){
             CreditCard creditCard =creditCardService.getCreditCardbyId(shoppingDto.getCardId());
             if(creditCard.getCreditCardLimit()>shoppingDto.getSpending()){
@@ -58,7 +57,7 @@ public class ShoppingService implements ShoppingServiceImpl {
             }
             else{
                 log.error("Insufficient balance !! ");
-                throw new NullPointerException("Insufficient balance !!");
+                throw new ArithmeticException("Insufficient balance !!");
             }
 
         }
@@ -72,14 +71,12 @@ public class ShoppingService implements ShoppingServiceImpl {
             }
             else{
                 log.error("Insufficient balance !! ");
-                throw new NullPointerException("Insufficient balance !!");
+                throw new ArithmeticException("Insufficient balance !!");
             }
 
         }
 
-
     }
-
     public Shopping getShoppingById(Long id) {
         Optional<Shopping> shopping = shoppingRepository.findById(id);
         return shopping.orElseThrow(()-> new EntityNotFoundException("Shopping"));

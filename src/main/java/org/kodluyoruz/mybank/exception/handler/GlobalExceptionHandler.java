@@ -19,6 +19,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponseMap);
     }
 
+    @ExceptionHandler(ArithmeticException.class)
+    public ResponseEntity<Map<String, String>> handleArithmeticException(ArithmeticException exception){
+        Map<String, String > errorResponseMap = new HashMap<>();
+        errorResponseMap.put("error_message",exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponseMap);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleException(Exception exception){
         Map<String, String > errorResponseMap = new HashMap<>();

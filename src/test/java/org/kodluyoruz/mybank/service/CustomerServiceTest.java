@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import jdk.jfr.Enabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
@@ -48,7 +49,8 @@ class CustomerServiceTest {
     }
 
     @Test
-    void shouldThrowEntityNotFoundExceptionWhenThereIsNoCustomerBeforeGetCustomerById() {
+    void
+    shouldThrowEntityNotFoundExceptionWhenThereIsNoCustomerBeforeGetCustomerById() {
         Customer customer =getSampleCustomerList().get(0);
         when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
         when(customerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
@@ -72,12 +74,18 @@ class CustomerServiceTest {
     }
 
     @Test
-    void updateCustomer() {
-        Customer expectedCustomer = getSampleCustomerList().get(0);
+    void WhenUpdateCustomerCalledWithValidRequest_ItShouldUpdateCustomer() {
+        Customer customer = new Customer();
+        customer.setId(1L);
         CustomerDto customerDto = new CustomerDto();
-        when(customerRepository.findById(1L)).thenReturn(Optional.of(expectedCustomer));
-
-
+        when(customerRepository.findById(1L)).thenReturn(Optional.of(customer));
+        when(customerRepository.save(customer)).thenReturn(customer);
+        when(modelMapper.map(customer,CustomerDto.class)).thenReturn(customerDto);
+        CustomerDto result = underTest.updateCustomer(1L,customerDto);
+        assertEquals(customerDto,result);
+        verify(customerRepository).findById(1L);
+        verify(customerRepository).save(customer);
+        verify(modelMapper).map(customer,CustomerDto.class);
     }
 
     @Test

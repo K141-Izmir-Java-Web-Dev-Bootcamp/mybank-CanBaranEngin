@@ -42,8 +42,6 @@ public class CustomerService implements CustomerServiceImpl {
     @Override
     public Customer create(CustomerDto customerDto){
         Customer createdCustomer = modelMapper.map(customerDto,Customer.class);
-        long generatedLong = 1000L + (long) (Math.random() * (9000L - 1000L));
-        createdCustomer.setIdentityNumber(generatedLong);
         return customerRepository.save(createdCustomer);
     }
 
@@ -59,7 +57,7 @@ public class CustomerService implements CustomerServiceImpl {
 
     @Override
     public List<Customer> getCustomers() {
-        List<Customer> customers = (List<Customer>) customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAll();
         if(customers.isEmpty()){
             log.error("The customers don't exist");
            throw new EntityNotFoundException("CustomerList");

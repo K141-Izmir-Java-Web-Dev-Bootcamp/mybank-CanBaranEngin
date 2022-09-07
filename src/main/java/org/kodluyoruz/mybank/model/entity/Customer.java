@@ -2,7 +2,9 @@ package org.kodluyoruz.mybank.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,9 +15,9 @@ import java.util.Set;
 @Entity
 @Table(name = "Customers")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Customer {
-
-
     @Id
     @SequenceGenerator(name = "customer_sequence",
             sequenceName = "customer_sequence",
@@ -56,6 +58,11 @@ public class Customer {
     private Set<Transfer> transferList;
 
 
-
-
+    public Customer(Long id, Long identityNumber, String firstName, String lastName, String email) {
+        this.id = id;
+        this.identityNumber = identityNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
 }

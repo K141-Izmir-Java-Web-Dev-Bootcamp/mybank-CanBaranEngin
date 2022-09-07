@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Data
 public class AccountDto {
+    private Long iban;
     private String name;
     private Double accountBalance;
     private String moneyType;

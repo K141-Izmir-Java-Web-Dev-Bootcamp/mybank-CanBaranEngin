@@ -7,6 +7,7 @@ import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
 import org.kodluyoruz.mybank.service.DepositAccountService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,13 @@ public class    DepositAccountController {
     public ResponseEntity<DepositAccount> getDepositAccountById(@PathVariable("id") Long id){
         DepositAccount depositAccount = depositAccountService.getDepositAccountById(id);
         return ResponseEntity.ok(depositAccount);
+
+    }
+
+    @DeleteMapping("DepositAccount/{id}")
+    public ResponseEntity deleteDepositAccountById(@PathVariable("id") Long id){
+        depositAccountService.deleteDepositAccountById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("DepositAccount " + id + " deleted successfully.");
 
     }
 

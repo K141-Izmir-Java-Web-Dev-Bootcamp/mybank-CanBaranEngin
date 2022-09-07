@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DebitCard;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class DebitCardService implements DebitCardServiceImpl {
 
     private final DebitCardRepository debitCardRepository;
@@ -52,5 +54,17 @@ public class DebitCardService implements DebitCardServiceImpl {
     public DebitCard getDebitCardById(Long id){
         Optional<DebitCard> debitCard = debitCardRepository.findById(id);
         return debitCard.orElseThrow(()->new EntityNotFoundException("DebitCard"));
+    }
+
+    public void deleteDebitCardById(Long id) {
+        Optional<DebitCard> debitCard = debitCardRepository.findById(id);
+        if(debitCard.isPresent()){
+            debitCardRepository.deleteById(id);
+        }
+        else{
+            log.error("The depositaccount to be deleted does not exist");
+            throw new EntityNotFoundException("DepositAccount");
+        }
+
     }
 }

@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.SavingsAccount;
@@ -18,6 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class SavingsAccountService implements SavingsAccountServiceImpl {
 
     private final SavingsAccountRepository savingsAccountRepository;
@@ -60,5 +62,17 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     public List<SavingsAccount> getDepositAccountByIdentityNumber(Long identityNumber) {
         Optional<List<SavingsAccount>> getSavingsAccountByIdentityNumber = savingsAccountRepository.findSavingsAccountByCustomerIdentityNumber(identityNumber);
         return getSavingsAccountByIdentityNumber.orElse(null);
+    }
+
+    public void deleteSavingsAccountById(Long id) {
+        Optional<SavingsAccount> savingsAccount = savingsAccountRepository.findById(id);
+        if(savingsAccount.isPresent() && savingsAccount.get().getAccountBalance()==0){
+            savingsAccountRepository.deleteById(id);
+        }
+        else{
+            log.error("The savingsAccount to be deleted does not exist");
+            throw new EntityNotFoundException("SavingsAccount");
+        }
+
     }
 }

@@ -62,4 +62,18 @@ public class DepositAccountService implements DepositAccountServiceImpl {
         Optional<List<DepositAccount>> getDepositAccountByIdentityNumber = depositAccountRepository.findDepositAccountByCustomerIdentityNumber(identityNumber);
         return getDepositAccountByIdentityNumber.orElse(null);
     }
+
+
+    public void deleteDepositAccountById(Long id) {
+        Optional<DepositAccount> depositAccount = depositAccountRepository.findById(id);
+        if(depositAccount.isPresent() && depositAccount.get().getAccountBalance()==0){
+            depositAccountRepository.deleteById(id);
+        }
+        else{
+            log.error("The depositaccount to be deleted does not exist");
+            throw new EntityNotFoundException("DepositAccount");
+        }
+
+
+    }
 }

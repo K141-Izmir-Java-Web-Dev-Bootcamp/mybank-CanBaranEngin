@@ -4,6 +4,7 @@ import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.dto.DebitCardDto;
 import org.kodluyoruz.mybank.service.DebitCardService;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,12 @@ public class DebitCardController {
     public ResponseEntity<DebitCard> getDebitCardById(@PathVariable Long id){
         DebitCard debitCard = debitCardService.getDebitCardById(id);
         return ResponseEntity.ok(debitCard);
+    }
+
+    @DeleteMapping("DebitCard/{id}")
+    public ResponseEntity deleteDebitCardById(@PathVariable("id") Long id){
+        debitCardService.deleteDebitCardById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("DebitCard " + id + " deleted successfully.");
+
     }
 }

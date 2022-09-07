@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class CreditCardService implements CreditCardImpl {
 
     private final CreditCardRepository creditCardRepository;
@@ -74,4 +76,18 @@ public class CreditCardService implements CreditCardImpl {
 
 
     }
+
+    public void deleteCreditCardById(Long id) {
+        Optional<CreditCard> creditCard = creditCardRepository.findById(id);
+        if(creditCard.isPresent() && creditCard.get().getCreditCardDebtValue()==0){
+            creditCardRepository.deleteById(id);
+        }
+        else{
+            log.error("The depositaccount to be deleted does not exist");
+            throw new EntityNotFoundException("DepositAccount");
+        }
+
+    }
+
+
 }

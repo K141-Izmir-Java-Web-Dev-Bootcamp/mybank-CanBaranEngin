@@ -52,9 +52,12 @@ public class CreditCardController {
         return ResponseEntity.status(HttpStatus.OK).body("Dept has been payed successfully");
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Debt payment process was gotten error ");
+    }
 
-
-
+    @DeleteMapping("CreditCard/{id}")
+    public ResponseEntity deleteCreditCardById(@PathVariable("id") Long id){
+        creditCardService.deleteCreditCardById(id);
+        return ResponseEntity.status(HttpStatus.OK).body("CreditCard " + id + " deleted successfully.");
 
     }
 }

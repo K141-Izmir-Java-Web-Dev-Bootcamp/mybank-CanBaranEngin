@@ -6,6 +6,7 @@ import org.kodluyoruz.mybank.model.entity.CardType;
 @Data
 public class ShoppingDto {
     private Long spending;
-    private int cardType;
+    private CardType cardType;
     private Long cardId;
+    private String cardPassword;
 }

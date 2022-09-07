@@ -15,8 +15,6 @@ import java.util.Set;
 @Entity
 @Table(name = "Customers")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Customer {
     @Id
     @SequenceGenerator(name = "customer_sequence",
@@ -57,12 +55,4 @@ public class Customer {
             inverseJoinColumns = @JoinColumn(name = "Transfer_id",referencedColumnName = "id"))
     private Set<Transfer> transferList;
 
-
-    public Customer(Long id, Long identityNumber, String firstName, String lastName, String email) {
-        this.id = id;
-        this.identityNumber = identityNumber;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-    }
 }

@@ -3,9 +3,7 @@ package org.kodluyoruz.mybank.service;
 import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.ArithmeticException;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
-import org.kodluyoruz.mybank.model.entity.CreditCard;
-import org.kodluyoruz.mybank.model.entity.DepositAccount;
-import org.kodluyoruz.mybank.model.entity.Shopping;
+import org.kodluyoruz.mybank.model.entity.*;
 import org.kodluyoruz.mybank.model.entity.dto.ShoppingDto;
 import org.kodluyoruz.mybank.repository.CreditCardRepository;
 import org.kodluyoruz.mybank.repository.DepositAccountRepository;
@@ -46,9 +44,9 @@ public class ShoppingService implements ShoppingServiceImpl {
     @Override
     public void create(ShoppingDto shoppingDto) {
         Shopping shopping = modelMapper.map(shoppingDto,Shopping.class);
-        if(shoppingDto.getCardType()==1){
+        if(shoppingDto.getCardType()== CardType.CREDİTCARD){
             CreditCard creditCard =creditCardService.getCreditCardbyId(shoppingDto.getCardId());
-            if(creditCard.getCreditCardLimit()>shoppingDto.getSpending()){
+            if(creditCard.getCreditCardLimit()>=shoppingDto.getSpending() && shoppingDto.getCardPassword().equals(creditCard.getPassword())){
                 creditCard.setCreditCardDebtValue(creditCardService.getCreditCardbyId(shoppingDto.getCardId()).getCreditCardDebtValue()+shoppingDto.getSpending());
                 creditCard.setCreditCardLimit(creditCard.getCreditCardLimit()-shoppingDto.getSpending());
                 shopping.setCustomer(creditCard.getCustomer());
@@ -61,9 +59,10 @@ public class ShoppingService implements ShoppingServiceImpl {
             }
 
         }
-        else if(shoppingDto.getCardType()==2 ) {
-            DepositAccount depositAccount = depositAccountService.getDepositAccountById(debitCardService.getDebitCardById(shoppingDto.getCardId()).getDepositAccount().getId());
-            if(depositAccount.getAccountBalance()>shoppingDto.getSpending()){
+        else if(shoppingDto.getCardType()==CardType.DEBİTCARD ) {
+            DebitCard debitcard=debitCardService.getDebitCardById(shoppingDto.getCardId());
+            DepositAccount depositAccount = depositAccountService.getDepositAccountById(debitcard.getDepositAccount().getId());
+            if(depositAccount.getAccountBalance()>=shoppingDto.getSpending() && shoppingDto.getCardPassword().equals(debitcard.getPassword())){
                 depositAccount.setAccountBalance(depositAccount.getAccountBalance()-shoppingDto.getSpending());
                 shopping.setCustomer(depositAccount.getCustomer());
                 depositAccountRepository.save(depositAccount);

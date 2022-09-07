@@ -16,7 +16,7 @@ public class SavingsAccount extends Account {
 
     @Column(name="Bank_Rate")
     private Double bankRate;
-    private final String accountType="savings";
+    private AccountType accountType=AccountType.SAVINGSACCOUNT;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;

@@ -22,7 +22,7 @@ public class DepositAccount extends Account {
     private DebitCard debitCard;
     @OneToOne
     private CreditCard creditCard;
-    private final String accountType="deposit";
+    private AccountType accountType=AccountType.DEPOSITACCOUNT;
 
     public DepositAccount(Long id, Long iban, Long customerIdentityNumber, Customer customer, DebitCard debitCard, CreditCard creditCard) {
         super(id, iban, customerIdentityNumber);

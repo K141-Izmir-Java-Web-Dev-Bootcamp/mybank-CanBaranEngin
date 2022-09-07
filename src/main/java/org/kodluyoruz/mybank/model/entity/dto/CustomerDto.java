@@ -7,7 +7,6 @@ import javax.persistence.Column;
 import java.time.LocalDate;
 
 @Data
-@AllArgsConstructor
 public class CustomerDto {
     private String firstName;
     private String lastName;

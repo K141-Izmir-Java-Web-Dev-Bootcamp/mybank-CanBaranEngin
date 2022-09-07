@@ -74,7 +74,7 @@ class CustomerServiceTest {
     @Test
     void updateCustomer() {
         Customer expectedCustomer = getSampleCustomerList().get(0);
-        CustomerDto customerDto = new CustomerDto("Can","Baran","canbaran", LocalDate.now(),1232L);
+        CustomerDto customerDto = new CustomerDto();
         when(customerRepository.findById(1L)).thenReturn(Optional.of(expectedCustomer));
 
 
@@ -87,8 +87,8 @@ class CustomerServiceTest {
 
     private List<Customer> getSampleCustomerList(){
         List<Customer> customerList = new ArrayList<>();
-        Customer customer = new Customer(1L,1232L,"Can","Baran","canbaran");
-        Customer customer1 = new Customer(2L,674645L,"engin","can","engincan");
+        Customer customer = new Customer();
+        Customer customer1 = new Customer();
         customerList.add(customer);
         customerList.add(customer1);
         return customerList;

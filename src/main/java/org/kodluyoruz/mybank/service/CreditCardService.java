@@ -80,7 +80,7 @@ public class CreditCardService implements CreditCardImpl {
             creditCardRepository.deleteById(id);
         }
         else{
-            log.error("The depositaccount to be deleted does not exist");
+            log.error("The DepositAccount to be deleted does not exist");
             throw new EntityNotFoundException("CreditCard");
         }
 

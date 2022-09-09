@@ -44,7 +44,7 @@ public class ShoppingService implements ShoppingServiceImpl {
     @Override
     public void create(ShoppingDto shoppingDto) {
         Shopping shopping = modelMapper.map(shoppingDto,Shopping.class);
-        if(shoppingDto.getCardType()== CardType.CREDİTCARD){
+        if(shoppingDto.getCardType()== CardType.CREDITCARD){
             CreditCard creditCard =creditCardService.getCreditCardbyId(shoppingDto.getCardId());
             if(creditCard.getCreditCardLimit()>=shoppingDto.getSpending() && shoppingDto.getCardPassword().equals(creditCard.getPassword())){
                 creditCard.setCreditCardDebtValue(creditCardService.getCreditCardbyId(shoppingDto.getCardId()).getCreditCardDebtValue()+shoppingDto.getSpending());
@@ -59,7 +59,7 @@ public class ShoppingService implements ShoppingServiceImpl {
             }
 
         }
-        else if(shoppingDto.getCardType()==CardType.DEBİTCARD ) {
+        else if(shoppingDto.getCardType()==CardType.DEBITCARD ) {
             DebitCard debitcard=debitCardService.getDebitCardById(shoppingDto.getCardId());
             DepositAccount depositAccount = depositAccountService.getDepositAccountById(debitcard.getDepositAccount().getId());
             if(depositAccount.getAccountBalance()>=shoppingDto.getSpending() && shoppingDto.getCardPassword().equals(debitcard.getPassword())){

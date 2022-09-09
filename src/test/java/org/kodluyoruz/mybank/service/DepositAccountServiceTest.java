@@ -2,8 +2,10 @@ package org.kodluyoruz.mybank.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.jfr.Enabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
@@ -11,6 +13,9 @@ import org.kodluyoruz.mybank.model.entity.CreditCard;
 import org.kodluyoruz.mybank.model.entity.Customer;
 import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
+import org.kodluyoruz.mybank.model.entity.dto.AccountDto;
+import org.kodluyoruz.mybank.model.entity.dto.CustomerDto;
+import org.kodluyoruz.mybank.repository.CustomerRepository;
 import org.kodluyoruz.mybank.repository.DepositAccountRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,6 +31,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class DepositAccountServiceTest {
@@ -39,100 +46,92 @@ class DepositAccountServiceTest {
     @Mock
     public CustomerService customerService;
 
+    @Mock
+    public CustomerRepository customerRepository;
+
     @InjectMocks
-    public DepositAccountService depositAccountService;
+    public DepositAccountService underTest;
 
     @Test
-    void create() {
-
-
+    void  whenCreateDepositAccountCalledWithValidRequest_ItShouldReturnValidDepositAccount() {
+        DepositAccount depositAccount = new DepositAccount();
+        Customer customer = new Customer();
+        AccountDto accountDto = new AccountDto();
+        accountDto.setCustomerId(1L);
+        when(modelMapper.map(accountDto,DepositAccount.class)).thenReturn(depositAccount);
+        when(customerService.getCustomerById(1L)).thenReturn(customer);
+        when(depositAccountRepository.save(depositAccount)).thenReturn(depositAccount);
+        DepositAccount result = underTest.create(accountDto);
+        assertEquals(result,depositAccount);
+    }
+    @Test
+    void WhenCallGetDepositAccounts_ItShouldReturnAllDepositAccounts() {
+        List<DepositAccount> depositAccount = getSampleDepositList();
+        when(depositAccountRepository.findAll()).thenReturn(depositAccount);
+        assertEquals(depositAccount,underTest.getAll());
 
     }
 
     @Test
-    void getAll() throws JsonProcessingException {
-        //init
-        List<DepositAccount> expectedDepositAccountList = getSampleDepositAccountList();
-        String expectedDepositAccountListJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedDepositAccountList);
-        //when
-        Mockito.when(depositAccountRepository.findAll()).thenReturn(expectedDepositAccountList);
-        //then
-        List<DepositAccount> actualDepositAccountList = depositAccountService.getAll();
-        String actualDepositAccountListJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(actualDepositAccountList);
-        //validate
-        Assertions.assertEquals(expectedDepositAccountListJSON,actualDepositAccountListJSON);
-        Mockito.verify(depositAccountRepository, Mockito.times(1)).findAll();
+    void WhenCallGetDepositAccountsById_ItShouldReturnDepositAccount() {
+        DepositAccount depositAccount = new DepositAccount();
+        when(depositAccountRepository.findById(1L)).thenReturn(Optional.of(depositAccount));
+        assertEquals(depositAccount,underTest.getDepositAccountById(1L));
+
+    }
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenThereIsNoDepositAccountBeforeGetDepositAccountById() {
+        DepositAccount depositAccount = new DepositAccount();
+        when(depositAccountRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,()-> underTest.getDepositAccountById(1L));
     }
 
     @Test
-    void getDepositAccountById_SUCCESS() throws JsonProcessingException {
-        //init
-        DepositAccount expectedDepositAccount = getSampleDepositAccountList().get(0);
-        Optional<DepositAccount> expectedDepositAccountOpt = Optional.of(expectedDepositAccount);
-        String expectedDepositAccountJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedDepositAccount);
-        //when
-        Mockito.when(depositAccountRepository.findById(1L)).thenReturn(expectedDepositAccountOpt);
-        //then
-        Optional<DepositAccount> actualDepositAccountOpt = depositAccountRepository.findById(1L);
-        String actualDepositAccountOptJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(actualDepositAccountOpt.get());
-        //validate
-        Assertions.assertEquals(expectedDepositAccountJSON ,actualDepositAccountOptJSON);
-        Mockito.verify(depositAccountRepository, Mockito.times(1)).findById(1L);
-    }
-    @Test
-    void getDepositAccountById_NOT_SUCCESS() throws JsonProcessingException {
-        //init
-        DepositAccount expectedDepositAccount = getSampleDepositAccountList().get(0);
-        Optional<DepositAccount> expectedDepositAccountOpt = Optional.of(expectedDepositAccount);
-        String expectedDepositAccountJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedDepositAccount);
-        //when
-        Mockito.when(depositAccountRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
-        //then
-        //validate
-        Assertions.assertThrows(EntityNotFoundException.class,()->depositAccountService.getDepositAccountById(1L));
-        Mockito.verify(depositAccountRepository, Mockito.times(1)).findById(1L);
-    }
-
-    @Test
-    void getDepositAccountByIban() throws JsonProcessingException {
-        //init
-        DepositAccount expectedDepositAccount = getSampleDepositAccountList().get(0);
-        Optional<DepositAccount> expectedDepositAccountOpt = Optional.of(expectedDepositAccount);
-        String expectedDepositAccountJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedDepositAccount);
-        //When
-        Mockito.when(depositAccountRepository.findDepositAccountByIban(423423L)).thenReturn(expectedDepositAccountOpt);
-        //Then
-        Optional<DepositAccount> actualDepositAccountOpt = depositAccountRepository.findDepositAccountByIban(423423L);
-        String actualDepositAccountOptJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(actualDepositAccountOpt.get());
-        //validate
-        Assertions.assertEquals(expectedDepositAccountJSON,actualDepositAccountOptJSON);
-        Mockito.verify(depositAccountRepository, Mockito.times(1)).findDepositAccountByIban(423423L);
+    void WhenCallGetDepositAccountsByIban_ItShouldReturnDepositAccount()  {
+        DepositAccount depositAccount = new DepositAccount();
+        depositAccount.setIban(1234L);
+        when(depositAccountRepository.findDepositAccountByIban(1234L)).thenReturn(Optional.of(depositAccount));
+        assertEquals(depositAccount,underTest.getDepositAccountByIban(1234L));
 
     }
 
     @Test
-    void getDepositAccountByIdentityNumber() throws JsonProcessingException {
-        //init
-        List<DepositAccount> expectedDepositAccountList = getSampleDepositAccountList();
-        Optional<List<DepositAccount>> expectedDepositAccountListOpt = Optional.of(expectedDepositAccountList);
-        String expectedDepositAccountListJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedDepositAccountList);
-        //When
-        Mockito.when(depositAccountRepository.findDepositAccountByCustomerIdentityNumber(4535345L)).thenReturn(expectedDepositAccountListOpt);
-        //Then
-        Optional<List<DepositAccount>> actualDepositAccountList = depositAccountRepository.findDepositAccountByCustomerIdentityNumber(4535345L);
-        String actualDepositAccountListJSON = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(actualDepositAccountList);
-        //Validate
-        Assertions.assertEquals(expectedDepositAccountListJSON,actualDepositAccountListJSON);
+    void WhenCallGetDepositAccountsByIban_ItShouldReturnNull()  {
+        DepositAccount depositAccount = new DepositAccount();
+        depositAccount.setIban(1234L);
+        when(depositAccountRepository.findDepositAccountByIban(1234L)).thenReturn(Optional.empty());
+        assertEquals(null,underTest.getDepositAccountByIban(1234L));
     }
 
-    private List<DepositAccount> getSampleDepositAccountList(){
-        List<DepositAccount> userList = new ArrayList<>();
-        DepositAccount depositAccount = new DepositAccount(1L,354223L,4535345L,new Customer(),new DebitCard(),new CreditCard());
-        DepositAccount depositAccount2 = new DepositAccount(2L,35454534L,4535345L,new Customer(),new DebitCard(),new CreditCard());
-        DepositAccount depositAccount3 = new DepositAccount(3L,7867867L,4535345L,new Customer(),new DebitCard(),new CreditCard());
-        userList.add(depositAccount);
-        userList.add(depositAccount2);
-        userList.add(depositAccount3);
-        return userList;
+    @Test
+    void WhenCallGetDepositAccountsByIdentityNumber_ItShouldReturnDepositAccount()  {
+        List<DepositAccount> depositAccount = getSampleDepositList();
+        when(depositAccountRepository.findDepositAccountByCustomerIdentityNumber(any())).thenReturn(Optional.of(depositAccount));
+        assertEquals(depositAccount,underTest.getDepositAccountByIdentityNumber(any()));
+    }
+
+    @Test
+    void WhenCallGetDepositAccountsByIdentityNumber_ItShouldReturnNull()  {
+        List<DepositAccount> depositAccount = getSampleDepositList();
+        when(depositAccountRepository.findDepositAccountByCustomerIdentityNumber(any())).thenReturn(Optional.empty());
+        assertEquals(null,underTest.getDepositAccountByIdentityNumber(any()));
+    }
+
+
+
+
+
+
+    private List<DepositAccount> getSampleDepositList(){
+        List<DepositAccount> depositList = new ArrayList<>();
+        DepositAccount depositAccount = new DepositAccount();
+        depositAccount.setCustomerIdentityNumber(123L);
+        depositAccount.setAccountBalance(0.0);
+        DepositAccount depositAccount1 = new DepositAccount();
+        depositAccount1.setCustomerIdentityNumber(123l);
+        depositAccount1.setAccountBalance(0.0);
+        depositList.add(depositAccount);
+        depositList.add(depositAccount1);
+        return depositList;
     }
 }

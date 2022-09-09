@@ -76,7 +76,7 @@ public class CustomerService implements CustomerServiceImpl {
             return modelMapper.map(customerRepository.save(customerResult.get()),CustomerDto.class);
         }
 
-        return null;
+        throw new EntityNotFoundException("Customer");
     }
 
     @Override

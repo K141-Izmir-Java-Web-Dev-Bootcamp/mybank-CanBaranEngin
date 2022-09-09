@@ -40,7 +40,7 @@ class DebitCardServiceTest {
 
 
     @Test
-    void whenCreateDepositCardCalledWithValidRequest_ItShouldReturnValidDebitCard() {
+    void whenCreateDebitCardCalledWithValidRequest_ItShouldReturnValidDebitCard() {
         Customer customer = new Customer();
         customer.setFirstName("can");
         customer.setLastName("baran");

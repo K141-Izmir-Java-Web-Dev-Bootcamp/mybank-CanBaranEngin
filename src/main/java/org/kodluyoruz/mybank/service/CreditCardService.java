@@ -59,16 +59,13 @@ public class CreditCardService implements CreditCardImpl {
     @Override
     public Boolean payDebt(Long id,Double moneyValue,String password) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
-        DepositAccount depositAccount = creditCard.get().getDepositAccount();
-
         if(creditCard.isPresent() && creditCard.get().getPassword().equals(password)){
+            DepositAccount depositAccount = creditCard.get().getDepositAccount();
             creditCard.get().setCreditCardDebtValue(creditCard.get().getCreditCardDebtValue()-moneyValue);
             creditCard.get().setCreditCardLimit(creditCard.get().getCreditCardLimit()+moneyValue);
             creditCardRepository.save(creditCard.get());
             depositAccount.setAccountBalance(depositAccount.getAccountBalance()-moneyValue);
             depositAccountRepository.save(depositAccount);
-
-
             return true;
         }
 
@@ -84,7 +81,7 @@ public class CreditCardService implements CreditCardImpl {
         }
         else{
             log.error("The depositaccount to be deleted does not exist");
-            throw new EntityNotFoundException("DepositAccount");
+            throw new EntityNotFoundException("CreditCard");
         }
 
     }

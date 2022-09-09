@@ -96,7 +96,7 @@ class DepositAccountServiceTest {
     }
 
     @Test
-    void WhenCallGetDepositAccountsByIban_ItShouldReturnNull()  {
+    void WhenCallGetDepositAccountsByIbanAndThereIsNoDepositAccount_ItShouldReturnNull()  {
         DepositAccount depositAccount = new DepositAccount();
         depositAccount.setIban(1234L);
         when(depositAccountRepository.findDepositAccountByIban(1234L)).thenReturn(Optional.empty());
@@ -111,7 +111,7 @@ class DepositAccountServiceTest {
     }
 
     @Test
-    void WhenCallGetDepositAccountsByIdentityNumber_ItShouldReturnNull()  {
+    void WhenCallGetDepositAccountsByIdentityNumberAndThereIsNoDeposiAccount_ItShouldReturnNull()  {
         List<DepositAccount> depositAccount = getSampleDepositList();
         when(depositAccountRepository.findDepositAccountByCustomerIdentityNumber(any())).thenReturn(Optional.empty());
         assertNull(underTest.getDepositAccountByIdentityNumber(any()));

@@ -81,7 +81,7 @@ class SavingsAccountServiceTest {
     }
 
     @Test
-    void WhenCallGetSavingsAccountByIban_ItShouldReturnNull()  {
+    void WhenCallGetSavingsAccountByIbanAndThereIsNoSavingAccount_ItShouldReturnNull()  {
         SavingsAccount savingsAccount = new SavingsAccount();
         savingsAccount.setIban(1234L);
         when(savingsAccountRepository.findSavingsAccountByIban(1234L)).thenReturn(Optional.empty());
@@ -96,7 +96,7 @@ class SavingsAccountServiceTest {
     }
 
     @Test
-    void WhenCallGetSavingsAccountByIdentityNumber_ItShouldReturnNull()  {
+    void WhenCallGetSavingsAccountByIdentityNumberAndThereIsNoSavingsAccount_ItShouldReturnNull()  {
         List<SavingsAccount> savingsAccounts = getSampleSavingsList();
         when(savingsAccountRepository.findSavingsAccountByCustomerIdentityNumber(any())).thenReturn(Optional.empty());
         assertNull(underTest.getSavingsAccountByIdentityNumber(any()));

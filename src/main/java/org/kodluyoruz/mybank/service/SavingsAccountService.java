@@ -48,23 +48,23 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
         List<SavingsAccount> savingsAccounts = (List<SavingsAccount>) savingsAccountRepository.findAll();
         return savingsAccounts.stream().collect(Collectors.toList());
     }
-
+    @Override
     public SavingsAccount getSavingsAccountById (Long id){
         Optional<SavingsAccount> getSavingsAccount = savingsAccountRepository.findById(id);
         return getSavingsAccount.orElseThrow(() -> new EntityNotFoundException("SavingsAccount"));
     }
-
+    @Override
     public SavingsAccount getSavingsAccountByIban(Long iban) {
         Optional<SavingsAccount> getSavingsAccountByIban = savingsAccountRepository.findSavingsAccountByIban(iban);
         return getSavingsAccountByIban.orElse(null);
 
     }
-
+    @Override
     public List<SavingsAccount> getSavingsAccountByIdentityNumber(Long identityNumber) {
         Optional<List<SavingsAccount>> getSavingsAccountByIdentityNumber = savingsAccountRepository.findSavingsAccountByCustomerIdentityNumber(identityNumber);
         return getSavingsAccountByIdentityNumber.orElse(null);
     }
-
+    @Override
     public void deleteSavingsAccountById(Long id) {
         Optional<SavingsAccount> savingsAccount = savingsAccountRepository.findById(id);
         if(savingsAccount.isPresent() && savingsAccount.get().getAccountBalance()==0){

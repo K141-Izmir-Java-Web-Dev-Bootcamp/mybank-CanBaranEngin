@@ -1,6 +1,7 @@
 package org.kodluyoruz.mybank.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.kodluyoruz.mybank.exception.ArithmeticException;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.exception.handler.GlobalExceptionHandler;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
@@ -73,6 +74,7 @@ public class CustomerService implements CustomerServiceImpl {
             customerResult.get().setLastName(customerDto.getLastName());
             customerResult.get().setBirthday(customerDto.getBirthday());
             customerResult.get().setEmail(customerDto.getEmail());
+            customerResult.get().setIdentityNumber(customerDto.getIdentityNumber());
             return modelMapper.map(customerRepository.save(customerResult.get()),CustomerDto.class);
         }
 
@@ -85,6 +87,10 @@ public class CustomerService implements CustomerServiceImpl {
         List<DepositAccount> depositAccounts = depositAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
         List<SavingsAccount> savingsAccounts = savingsAccountService.getSavingsAccountByIdentityNumber(customers.get().getIdentityNumber());
         if(customers.isPresent() && savingsAccounts.isEmpty()){
+            if( depositAccounts.isEmpty()){
+                customerRepository.deleteById(id);
+                return true;
+            }
             for (int i = 0; i < depositAccounts.size() ; i++) {
                 if(depositAccounts.get(i).getAccountBalance()!=0){
                     i=depositAccounts.size()-1;
@@ -102,8 +108,9 @@ public class CustomerService implements CustomerServiceImpl {
             }
 
         }
+
         log.error("The customer to be deleted does not exist");
-        throw new EntityNotFoundException("Customer");
+        throw new ArithmeticException("Your Accounts have money !!");
 
     }
 }

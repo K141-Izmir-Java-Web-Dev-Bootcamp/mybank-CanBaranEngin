@@ -16,4 +16,8 @@ public interface DepositAccountServiceImpl {
 
     public DepositAccount getDepositAccountByIban(Long iban);
 
+    public List<DepositAccount> getDepositAccountByIdentityNumber(Long identityNumber);
+
+    public void deleteDepositAccountById(Long id);
+
 }

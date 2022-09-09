@@ -76,6 +76,7 @@ public class ShoppingService implements ShoppingServiceImpl {
         }
 
     }
+    @Override
     public Shopping getShoppingById(Long id) {
         Optional<Shopping> shopping = shoppingRepository.findById(id);
         return shopping.orElseThrow(()-> new EntityNotFoundException("Shopping"));

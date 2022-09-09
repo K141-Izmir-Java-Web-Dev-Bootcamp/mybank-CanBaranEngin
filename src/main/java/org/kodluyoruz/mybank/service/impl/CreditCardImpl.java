@@ -8,5 +8,7 @@ public interface CreditCardImpl {
     public CreditCard getCreditCardbyId(Long id);
     public Double getDebtById(Long id);
     public Boolean payDebt(Long id,Double moneyValue,String password);
+    public void deleteCreditCardById(Long id);
+
 
 }

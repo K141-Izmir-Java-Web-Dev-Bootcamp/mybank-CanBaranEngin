@@ -23,7 +23,6 @@ public class TransferService implements TrasnferServiceImpl {
     private final TransferRepository transferRepository;
     private final DepositAccountService depositAccountService;
     private final DepositAccountRepository depositAccountRepository;
-
     private final SavingsAccountService savingsAccountService;
     private final SavingsAccountRepository savingsAccountRepository;
             ;
@@ -63,9 +62,8 @@ public class TransferService implements TrasnferServiceImpl {
             transferRepository.save(transfer);
         }
 
-
     }
-
+    @Override
     public Transfer getTransferById(Long id) {
         Optional<Transfer> transfer = transferRepository.findById(id);
         return transfer.orElseThrow(()-> new EntityNotFoundException("Transfer"));

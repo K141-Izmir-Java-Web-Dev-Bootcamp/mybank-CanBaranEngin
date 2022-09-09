@@ -33,7 +33,7 @@ public class DebitCardService implements DebitCardServiceImpl {
 
 
 
-
+    @Override
     public DebitCard create(DebitCardDto debitCardDto) {
         DebitCard createdDebitCard = modelMapper.map(debitCardDto, DebitCard.class);
         createdDebitCard.setCustomer(customerService.getCustomerById(debitCardDto.getCustomerId()));
@@ -41,21 +41,21 @@ public class DebitCardService implements DebitCardServiceImpl {
         createdDebitCard.setCustomerFirstName(customerService.getCustomerById(debitCardDto.getCustomerId()).getFirstName());
         createdDebitCard.setCustomerLastName(customerService.getCustomerById(debitCardDto.getCustomerId()).getLastName());
         return debitCardRepository.save(createdDebitCard);
-
     }
 
+    @Override
     public List<DebitCard> getAll() {
         List<DebitCard> debitCard = (List<DebitCard>) debitCardRepository.findAll();
 
         return debitCard;
 
     }
-
+    @Override
     public DebitCard getDebitCardById(Long id){
         Optional<DebitCard> debitCard = debitCardRepository.findById(id);
         return debitCard.orElseThrow(()->new EntityNotFoundException("DebitCard"));
     }
-
+    @Override
     public void deleteDebitCardById(Long id) {
         Optional<DebitCard> debitCard = debitCardRepository.findById(id);
         if(debitCard.isPresent()){

@@ -49,7 +49,7 @@ public class CreditCardService implements CreditCardImpl {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         return creditCard.orElseThrow(()-> new EntityNotFoundException("CreditCard"));
     }
-
+    @Override
     public Double getDebtById(Long id) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         return creditCard.map(CreditCard::getCreditCardDebtValue).orElse(null);
@@ -73,7 +73,7 @@ public class CreditCardService implements CreditCardImpl {
 
 
     }
-
+    @Override
     public void deleteCreditCardById(Long id) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         if(creditCard.isPresent() && creditCard.get().getCreditCardDebtValue()==0){

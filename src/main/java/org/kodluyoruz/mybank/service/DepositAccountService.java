@@ -57,13 +57,13 @@ public class DepositAccountService implements DepositAccountServiceImpl {
         Optional<DepositAccount> getDepositAccountByIban = depositAccountRepository.findDepositAccountByIban(iban);
         return getDepositAccountByIban.orElse(null);
     }
-
+    @Override
     public List<DepositAccount> getDepositAccountByIdentityNumber(Long identityNumber) {
         Optional<List<DepositAccount>> getDepositAccountByIdentityNumber = depositAccountRepository.findDepositAccountByCustomerIdentityNumber(identityNumber);
         return getDepositAccountByIdentityNumber.orElse(null);
     }
 
-
+    @Override
     public void deleteDepositAccountById(Long id) {
         Optional<DepositAccount> depositAccount = depositAccountRepository.findById(id);
         if(depositAccount.isPresent() && depositAccount.get().getAccountBalance()==0){

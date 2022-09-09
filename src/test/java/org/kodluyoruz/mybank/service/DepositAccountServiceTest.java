@@ -32,7 +32,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class DepositAccountServiceTest {
@@ -100,7 +100,7 @@ class DepositAccountServiceTest {
         DepositAccount depositAccount = new DepositAccount();
         depositAccount.setIban(1234L);
         when(depositAccountRepository.findDepositAccountByIban(1234L)).thenReturn(Optional.empty());
-        assertEquals(null,underTest.getDepositAccountByIban(1234L));
+        assertNull(underTest.getDepositAccountByIban(1234L));
     }
 
     @Test
@@ -114,7 +114,31 @@ class DepositAccountServiceTest {
     void WhenCallGetDepositAccountsByIdentityNumber_ItShouldReturnNull()  {
         List<DepositAccount> depositAccount = getSampleDepositList();
         when(depositAccountRepository.findDepositAccountByCustomerIdentityNumber(any())).thenReturn(Optional.empty());
-        assertEquals(null,underTest.getDepositAccountByIdentityNumber(any()));
+        assertNull(underTest.getDepositAccountByIdentityNumber(any()));
+    }
+
+    @Test
+    void WhenCallDeleteDepositAccountById_ItShouldDeleteDepositAccount(){
+        DepositAccount depositAccount = new DepositAccount();
+        depositAccount.setId(1L);
+        depositAccount.setAccountBalance(0.0);
+        when(depositAccountRepository.findById(1L)).thenReturn(Optional.of(depositAccount));
+        doNothing().when(depositAccountRepository).deleteById(1L);
+        underTest.deleteDepositAccountById(1L);
+        verify(depositAccountRepository,times(1)).deleteById(1L);
+    }
+
+    @Test
+    @Disabled
+    void shouldThrowEntityNotFoundExceptionWhenThereIsNoDepositAccountBeforeDeleteDepositAccountById(){
+        DepositAccount depositAccount = new DepositAccount();
+        depositAccount.setId(1L);
+        depositAccount.setAccountBalance(0.0);
+        when(depositAccountRepository.findById(1L)).thenReturn(Optional.empty());
+        doNothing().when(depositAccountRepository).deleteById(1L);
+        underTest.deleteDepositAccountById(1L);
+        assertThrows(EntityNotFoundException.class,()-> underTest.deleteDepositAccountById(1L));
+        //verify(depositAccountRepository,times(1)).deleteById(1L);
     }
 
 

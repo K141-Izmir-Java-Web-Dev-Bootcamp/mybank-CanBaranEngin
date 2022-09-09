@@ -83,7 +83,7 @@ public class CustomerService implements CustomerServiceImpl {
     public Boolean deleteCustomer(Long id) {
         Optional<Customer> customers = customerRepository.findById(id);
         List<DepositAccount> depositAccounts = depositAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
-        List<SavingsAccount> savingsAccounts = savingsAccountService.getDepositAccountByIdentityNumber(customers.get().getIdentityNumber());
+        List<SavingsAccount> savingsAccounts = savingsAccountService.getSavingsAccountByIdentityNumber(customers.get().getIdentityNumber());
         if(customers.isPresent() && savingsAccounts.isEmpty()){
             for (int i = 0; i < depositAccounts.size() ; i++) {
                 if(depositAccounts.get(i).getAccountBalance()!=0){

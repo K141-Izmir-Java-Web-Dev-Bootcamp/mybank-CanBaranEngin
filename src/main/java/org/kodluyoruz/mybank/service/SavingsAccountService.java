@@ -26,6 +26,7 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
     private final CustomerService customerService;
     private final ModelMapper modelMapper;
 
+
     public SavingsAccountService(SavingsAccountRepository savingsAccountRepository, CustomerRepository customerRepository, CustomerService customerService, ModelMapper modelMapper) {
         this.savingsAccountRepository= savingsAccountRepository;
         this.customerService = customerService;
@@ -50,16 +51,16 @@ public class SavingsAccountService implements SavingsAccountServiceImpl {
 
     public SavingsAccount getSavingsAccountById (Long id){
         Optional<SavingsAccount> getSavingsAccount = savingsAccountRepository.findById(id);
-        return getSavingsAccount.map(savingsAccountRepository::save).orElseThrow(() -> new EntityNotFoundException("SavingsAccount"));
+        return getSavingsAccount.orElseThrow(() -> new EntityNotFoundException("SavingsAccount"));
     }
 
     public SavingsAccount getSavingsAccountByIban(Long iban) {
         Optional<SavingsAccount> getSavingsAccountByIban = savingsAccountRepository.findSavingsAccountByIban(iban);
-        return getSavingsAccountByIban.map(savingsAccountRepository::save).orElse(null);
+        return getSavingsAccountByIban.orElse(null);
 
     }
 
-    public List<SavingsAccount> getDepositAccountByIdentityNumber(Long identityNumber) {
+    public List<SavingsAccount> getSavingsAccountByIdentityNumber(Long identityNumber) {
         Optional<List<SavingsAccount>> getSavingsAccountByIdentityNumber = savingsAccountRepository.findSavingsAccountByCustomerIdentityNumber(identityNumber);
         return getSavingsAccountByIdentityNumber.orElse(null);
     }

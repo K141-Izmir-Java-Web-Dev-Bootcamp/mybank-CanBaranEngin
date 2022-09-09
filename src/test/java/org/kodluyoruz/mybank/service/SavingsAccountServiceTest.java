@@ -113,6 +113,12 @@ class SavingsAccountServiceTest {
         verify(savingsAccountRepository,times(1)).deleteById(1L);
     }
 
+    @Test
+    void shouldThrowEntityNotFoundExceptionWhenThereIsNoSavingsAccountBeforeDeleteSavingsAccountById(){
+        when(savingsAccountRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class,()-> underTest.deleteSavingsAccountById(1L));
+    }
+
 
     private List<SavingsAccount> getSampleSavingsList(){
         List<SavingsAccount> savingsAccountList = new ArrayList<>();

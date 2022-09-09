@@ -129,16 +129,9 @@ class DepositAccountServiceTest {
     }
 
     @Test
-    @Disabled
     void shouldThrowEntityNotFoundExceptionWhenThereIsNoDepositAccountBeforeDeleteDepositAccountById(){
-        DepositAccount depositAccount = new DepositAccount();
-        depositAccount.setId(1L);
-        depositAccount.setAccountBalance(0.0);
         when(depositAccountRepository.findById(1L)).thenReturn(Optional.empty());
-        doNothing().when(depositAccountRepository).deleteById(1L);
-        underTest.deleteDepositAccountById(1L);
         assertThrows(EntityNotFoundException.class,()-> underTest.deleteDepositAccountById(1L));
-        //verify(depositAccountRepository,times(1)).deleteById(1L);
     }
 
 

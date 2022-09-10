@@ -1,5 +1,6 @@
 package org.kodluyoruz.mybank.service;
 
+import org.kodluyoruz.mybank.exception.ArithmeticException;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.SavingsAccount;
@@ -37,29 +38,31 @@ public class TransferService implements TrasnferServiceImpl {
         this.modelMapper = modelMapper;
     }
     @Override
-    public void create(TransferDto transferDto) {
+    public Boolean create(TransferDto transferDto) {
         Transfer transfer = modelMapper.map(transferDto,Transfer.class);
         DepositAccount depositAccountReceiver = depositAccountService.getDepositAccountByIban(transfer.getReceiverIBAN());
         DepositAccount depositAccountSender = depositAccountService.getDepositAccountByIban(transfer.getSenderIBAN());
         SavingsAccount savingsAccountReceiver = savingsAccountService.getSavingsAccountByIban(transfer.getReceiverIBAN());
         transfer.setTransferDate(LocalDate.now());
-
-        if(depositAccountReceiver!=null){
-            if (depositAccountReceiver.getIban().equals(transfer.getReceiverIBAN()) && depositAccountSender!=null ){
-                depositAccountReceiver.setAccountBalance(depositAccountReceiver.getAccountBalance()+transferDto.getMoneyValue());
-                depositAccountRepository.save(depositAccountReceiver);
-                depositAccountSender.setAccountBalance(depositAccountSender.getAccountBalance()-transferDto.getMoneyValue());
-                depositAccountRepository.save(depositAccountSender);
-                transferRepository.save(transfer);
-            }
+        if(depositAccountReceiver!=null && depositAccountSender!=null){
+            depositAccountReceiver.setAccountBalance(depositAccountReceiver.getAccountBalance()+transferDto.getMoneyValue());
+            depositAccountRepository.save(depositAccountReceiver);
+            depositAccountSender.setAccountBalance(depositAccountSender.getAccountBalance()-transferDto.getMoneyValue());
+            depositAccountRepository.save(depositAccountSender);
+            transferRepository.save(transfer);
+            return true;
         }
 
-        else if(savingsAccountReceiver.getIban().equals(transfer.getReceiverIBAN()) && depositAccountSender!=null){
+        else if(depositAccountSender!=null){
             savingsAccountReceiver.setAccountBalance(savingsAccountReceiver.getAccountBalance() + transferDto.getMoneyValue());
             savingsAccountRepository.save(savingsAccountReceiver);
             depositAccountSender.setAccountBalance(depositAccountSender.getAccountBalance()-transferDto.getMoneyValue());
             depositAccountRepository.save(depositAccountSender);
             transferRepository.save(transfer);
+            return true;
+        }
+        else {
+            return false;
         }
 
     }

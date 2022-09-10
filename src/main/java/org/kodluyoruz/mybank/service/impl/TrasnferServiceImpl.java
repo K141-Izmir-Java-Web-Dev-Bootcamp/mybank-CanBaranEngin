@@ -5,7 +5,7 @@ import org.kodluyoruz.mybank.model.entity.dto.TransferDto;
 
 public interface TrasnferServiceImpl {
 
-    public void create(TransferDto transferDto);
+    public Boolean create(TransferDto transferDto);
     public Transfer getTransferById(Long id);
 
 }

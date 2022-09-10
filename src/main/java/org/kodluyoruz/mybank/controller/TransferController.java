@@ -27,8 +27,13 @@ public class TransferController {
 
     @PostMapping("/transfer")
     public ResponseEntity create(@RequestBody TransferDto transferDto){
-        transferService.create(transferDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Transferring process has been done successfully");
+        if(transferService.create(transferDto)){
+            return ResponseEntity.status(HttpStatus.CREATED).body("Transferring process has been done successfully");
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("You shouldn't transfer money from savings account,process has been denied");
+        }
+
 
     }
 

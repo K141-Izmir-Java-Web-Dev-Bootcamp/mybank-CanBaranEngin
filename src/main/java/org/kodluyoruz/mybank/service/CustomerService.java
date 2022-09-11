@@ -33,6 +33,7 @@ public class CustomerService implements CustomerServiceImpl {
     @Autowired
     DepositAccountRepository depositAccountRepository;
 
+
     private final ModelMapper modelMapper;
 
     public CustomerService(CustomerRepository customerRepository, ModelMapper modelMapper) {

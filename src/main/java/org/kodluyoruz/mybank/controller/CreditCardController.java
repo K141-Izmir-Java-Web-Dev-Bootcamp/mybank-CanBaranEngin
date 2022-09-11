@@ -56,8 +56,13 @@ public class CreditCardController {
 
     @DeleteMapping("CreditCard/{id}")
     public ResponseEntity deleteCreditCardById(@PathVariable("id") Long id){
-        creditCardService.deleteCreditCardById(id);
-        return ResponseEntity.status(HttpStatus.OK).body("CreditCard " + id + " deleted successfully.");
+
+        if(creditCardService.deleteCreditCardById(id)){
+            return ResponseEntity.status(HttpStatus.OK).body("CreditCard " + id + " deleted successfully.");
+        }
+        else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Your Credit card have debt. Please pay off your debt before deleting the card ");
+
 
     }
 }

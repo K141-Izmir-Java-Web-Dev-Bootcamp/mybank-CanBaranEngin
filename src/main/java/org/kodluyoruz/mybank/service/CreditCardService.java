@@ -74,14 +74,23 @@ public class CreditCardService implements CreditCardImpl {
 
     }
     @Override
-    public void deleteCreditCardById(Long id) {
+    public Boolean deleteCreditCardById(Long id) {
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
-        if(creditCard.isPresent() && creditCard.get().getCreditCardDebtValue()==0){
-            creditCardRepository.deleteById(id);
+        if(creditCard.isPresent()){
+            if(creditCard.get().getCreditCardDebtValue()==0){
+                creditCardRepository.deleteById(id);
+                return true;
+            }
+            else {
+                return false;
+            }
+
+
         }
         else{
             log.error("The DepositAccount to be deleted does not exist");
             throw new EntityNotFoundException("CreditCard");
+            
         }
 
     }

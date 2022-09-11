@@ -48,7 +48,6 @@ public class DebitCardService implements DebitCardServiceImpl {
         List<DebitCard> debitCard = (List<DebitCard>) debitCardRepository.findAll();
 
         return debitCard;
-
     }
     @Override
     public DebitCard getDebitCardById(Long id){

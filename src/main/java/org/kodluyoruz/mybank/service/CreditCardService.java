@@ -3,6 +3,7 @@ package org.kodluyoruz.mybank.service;
 import lombok.extern.slf4j.Slf4j;
 import org.kodluyoruz.mybank.exception.EntityNotFoundException;
 import org.kodluyoruz.mybank.model.entity.CreditCard;
+import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.DepositAccount;
 import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.repository.CreditCardRepository;
@@ -11,6 +12,7 @@ import org.kodluyoruz.mybank.service.impl.CreditCardImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,6 +50,11 @@ public class CreditCardService implements CreditCardImpl {
     public CreditCard getCreditCardbyId(Long id){
         Optional<CreditCard> creditCard = creditCardRepository.findById(id);
         return creditCard.orElseThrow(()-> new EntityNotFoundException("CreditCard"));
+    }
+    @Override
+    public List<CreditCard> getAll() {
+        List<CreditCard> creditCards = (List<CreditCard>) creditCardRepository.findAll();
+        return creditCards;
     }
     @Override
     public Double getDebtById(Long id) {

@@ -1,12 +1,15 @@
 package org.kodluyoruz.mybank.controller;
 
 import org.kodluyoruz.mybank.model.entity.CreditCard;
+import org.kodluyoruz.mybank.model.entity.DebitCard;
 import org.kodluyoruz.mybank.model.entity.dto.CreditCardDto;
 import org.kodluyoruz.mybank.service.CreditCardService;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -38,6 +41,12 @@ public class CreditCardController {
         CreditCard creditCard = creditCardService.getCreditCardbyId(id);
         return ResponseEntity.ok(creditCard);
     }
+    @GetMapping("CreditCards")
+    public ResponseEntity<List<CreditCard>> getAll(){
+        List<CreditCard> creditCards = creditCardService.getAll();
+        return ResponseEntity.ok(creditCards);
+    }
+
 
     @GetMapping("creditCardDebt/{id}")
     public ResponseEntity<Double> getDebtById(@PathVariable Long id){

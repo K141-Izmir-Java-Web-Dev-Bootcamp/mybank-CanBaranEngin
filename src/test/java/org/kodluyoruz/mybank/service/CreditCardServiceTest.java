@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,6 +81,15 @@ class CreditCardServiceTest {
     }
 
     @Test
+    void WhenCallGetCreditCards_ItShouldReturnAllCreditCards() {
+        List<CreditCard> creditCards = getSampleCreditCardList();
+        when(creditCardRepository.findAll()).thenReturn(creditCards);
+        assertEquals(creditCards,underTest.getAll());
+
+
+    }
+
+    @Test
     void WhenCallGetCreditCardDebtByIdAndThereIsNoCreditCardDebt_ItShouldReturnNull() {
         when(creditCardRepository.findById(1L)).thenReturn(Optional.empty());
         assertNull(underTest.getDebtById(1L));
@@ -119,7 +130,6 @@ class CreditCardServiceTest {
         creditCard.setDepositAccount(depositAccount);
         when(creditCardRepository.findById(1L)).thenReturn(Optional.empty());
         assertEquals(false,underTest.payDebt(1L,100.0,"1234"));
-
     }
 
     @Test
@@ -146,5 +156,19 @@ class CreditCardServiceTest {
         when(creditCardRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, ()-> underTest.deleteCreditCardById(1L));
     }
+
+
+    private List<CreditCard> getSampleCreditCardList(){
+        List<CreditCard> creditCardList = new ArrayList<>();
+        CreditCard creditCard = new CreditCard();
+        creditCard.setId(1L);
+        CreditCard creditCard1 = new CreditCard();
+        creditCard1.setId(2L);
+
+        creditCardList.add(creditCard);
+        creditCardList.add(creditCard1);
+        return creditCardList;
+    }
+
 
 }

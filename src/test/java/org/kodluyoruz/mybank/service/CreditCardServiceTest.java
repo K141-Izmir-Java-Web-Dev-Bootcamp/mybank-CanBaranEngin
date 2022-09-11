@@ -128,8 +128,17 @@ class CreditCardServiceTest {
         creditCard.setId(1L);
         when(creditCardRepository.findById(1L)).thenReturn(Optional.of(creditCard));
         doNothing().when(creditCardRepository).deleteById(1L);
-        underTest.deleteCreditCardById(1L);
+        assertEquals(true,underTest.deleteCreditCardById(1L));
         verify(creditCardRepository,times(1)).deleteById(1L);
+    }
+
+    @Test
+    void WhenCallDeleteCreditCardByIdAndIfCreditCardDebtValueNotZero_ItShouldNotDeleteCreditCards(){
+        CreditCard creditCard = new CreditCard();
+        creditCard.setId(1L);
+        creditCard.setCreditCardDebtValue(100.0);
+        when(creditCardRepository.findById(1L)).thenReturn(Optional.of(creditCard));
+        assertEquals(false,underTest.deleteCreditCardById(1L));
     }
 
     @Test

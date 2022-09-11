@@ -84,13 +84,11 @@ public class CreditCardService implements CreditCardImpl {
             else {
                 return false;
             }
-
-
         }
         else{
             log.error("The DepositAccount to be deleted does not exist");
             throw new EntityNotFoundException("CreditCard");
-            
+
         }
 
     }
